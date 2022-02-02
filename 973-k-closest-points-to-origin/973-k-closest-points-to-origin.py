@@ -2,7 +2,9 @@ from collections import defaultdict
 import heapq
 
 class Solution:
-    # Time = O(nlogn + 2n + k)
+    # Time = O(k*nlogn)
+    # Space = O(n)
+    
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
         def calcDist(point):
             return math.sqrt(point[0]**2 + point[1]**2)
