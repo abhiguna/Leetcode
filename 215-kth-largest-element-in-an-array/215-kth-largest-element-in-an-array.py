@@ -1,8 +1,13 @@
 import heapq
 
 class Solution:
-    # Time = O(nlogn)
-    # Space = O(1)
+    # Time = O(nlogk)
+    # Space = O(k)
     def findKthLargest(self, nums: List[int], k: int) -> int:
-        nums.sort()
-        return nums[-k]
+        heap = []
+        heapq.heapify(heap)
+        for num in nums:
+            heapq.heappush(heap, num)
+            if len(heap) > k:
+                heapq.heappop(heap)
+        return heapq.heappop(heap)
