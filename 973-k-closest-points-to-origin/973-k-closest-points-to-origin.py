@@ -2,7 +2,7 @@ from collections import defaultdict
 import heapq
 
 class Solution:
-    # Time = O(k*nlogn)
+    # Time = O(n + klogn)
     # Space = O(n)
     
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
