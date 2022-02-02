@@ -1,6 +1,8 @@
+# Date: 2/2/22
+# 30m 2
 class Solution:
-    # Time = O(min(m, n))
-    # Space = O(min(m, n))
+    # Time = O(m + n)
+    # Space = O(m + n)
     def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
         m = len(firstList)
         n = len(secondList)
