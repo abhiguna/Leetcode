@@ -1,10 +1,14 @@
 class Solution:
-    # Time = O(1)
+    # Time = O(logn)
     # Space = O(1)
     def findKthPositive(self, arr: List[int], k: int) -> int:
-        all_numbers = [num for num in range(1, 2001)]
-        all_num_set = set(all_numbers)
-        arr_set = set(arr)
-        missing_set = all_num_set - arr_set
-        return list(missing_set)[k-1]
+        low = 0
+        high = len(arr) - 1
+        while low <= high:
+            mid = (low+high) // 2
+            if arr[mid] - mid - 1 < k:
+                low = mid + 1
+            else:
+                high = mid - 1
+        return low + k
                 
