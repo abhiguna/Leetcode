@@ -1,15 +1,26 @@
-import heapq
+# Optimal
+
+# Date: 2/2/22
+# 30m 2
 
 class Solution:
-    # Time: O(n^2 + nlogk)
-    # Space: O(k)
+    # Time: 
+    # Space: 
     def kthSmallest(self, matrix: List[List[int]], k: int) -> int:
-        max_heap = []
-        heapq.heapify(max_heap)
+        def less_than(val):
+            count = 0
+            for row in matrix:
+                num_less = bisect.bisect_right(row, val)
+                count += num_less
+            return count
+        
+        low = matrix[0][0]
+        high = matrix[-1][-1]
         n = len(matrix)
-        for i in range(n):
-            for j in range(n):
-                heapq.heappush(max_heap, -1*matrix[i][j])
-                if len(max_heap) > k:
-                    heapq.heappop(max_heap)
-        return -1*heapq.heappop(max_heap)
+        while low < high:
+            mid = (low+high) // 2
+            if less_than(mid) < k:
+                low = mid + 1
+            else:
+                high = mid
+        return low
