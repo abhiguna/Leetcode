@@ -40,7 +40,7 @@ class Solution:
             result = result * 10 + digit
             idx += 1
         
-        # Return final result number generated from the string
+        # Return final result number after updating its sign
         return sign * result
                 
         
