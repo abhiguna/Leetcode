@@ -1,4 +1,9 @@
+# Optimal
+
+# Date: 2/6/22
+# 30m 3
 class Solution:
+    # Pattern ad-hoc
     # Time = O(n)
     # Space = O(1)
     def myAtoi(self, s: str) -> int:
