@@ -1,6 +1,8 @@
+# Date: 2/6/22
+# 30m 4
 from collections import defaultdict
 import random
-
+# Pattern: dictionary
 class Solution:
     # Time = O(n)
     # Space = O(n)
