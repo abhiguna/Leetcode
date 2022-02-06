@@ -1,4 +1,11 @@
+# Optimal
+
+# Date: 2/6/22
+# 30m 5
 class Solution:
+    # Pattern = ad-hoc
+    # Time = O(n)
+    # Space = O(1)
     def sortColors(self, nums: List[int]) -> None:
         """
         Do not return anything, modify nums in-place instead.
