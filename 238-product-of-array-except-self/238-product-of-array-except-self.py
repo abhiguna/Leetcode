@@ -1,7 +1,11 @@
 # Optimal Solution
+
+# Date: 2/6/22
+# 30m 3
 class Solution:
     # Pattern: left-right
-    # Time = O(n), Space = O(1)
+    # Time = O(n)
+    # Space = O(1)
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         N = len(nums)
         answer = [0]*N
