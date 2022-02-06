@@ -2,6 +2,7 @@ import bisect
 import random
 
 class Solution:
+    # Pattern: binary search
     # Time = O(n)
     # Space = O(n)
     def __init__(self, w: List[int]):
