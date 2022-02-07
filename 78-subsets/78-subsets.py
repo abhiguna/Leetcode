@@ -1,4 +1,11 @@
+# Optimal
+
+# Date: 2/7/22
+# 30m 5
 class Solution:
+    # Pattern: BFS
+    # Time = O(n * 2^n)
+    # Space = O(n) + return array 
     def subsets(self, nums: List[int]) -> List[List[int]]:
         subsets = []
         subsets.append([])
