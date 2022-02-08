@@ -1,6 +1,6 @@
 class Solution:
     # Time = O(m*n), m = len(tasks) and n = idle time
-    # Space = O(m)
+    # Space = O(1) since fixed set of characters
     def leastInterval(self, tasks: List[str], n: int) -> int:
         # each task 1 unit time
         # minimize idle time
