@@ -1,9 +1,8 @@
-# sorted + unique --> bin search
-# [3, 4, 5, 1, 2, 2.5]
-# mid > mid_right --> low = mid + 1
-# mid > mid_left --> high = mid - 1
-
+# Date: 2/8/22
+# 30m 3
 class Solution:
+    # Time = O(logn)
+    # Space = O(1)
     def findMin(self, nums: List[int]) -> int:
         if len(nums) == 1:
             return nums[0]
