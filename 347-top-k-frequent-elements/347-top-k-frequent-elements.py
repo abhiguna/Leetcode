@@ -1,18 +1,17 @@
-# Date: 2/8/22
-# 30m 3
+from collections import Counter
+import heapq
+
 class Solution:
-    # Pattern: Bucket Sort
-    # Time = O(n)
-    # Space = O(n)
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        count = Counter(nums)
-        freq = [[] for i in range(len(nums) + 1)]
-        for n,c in count.items():
-            freq[c].append(n)
-        
+        freq = Counter(nums)
+        heap = []
+        heapq.heapify(heap)
+        for num, count in freq.items():
+            heapq.heappush(heap, (count, num))
+            if len(heap) > k:
+                heapq.heappop(heap)
         result = []
-        for i in range(len(freq) - 1, 0, -1):
-            for n in freq[i]:
-                result.append(n)
-                if len(result) == k:
-                    return result
+        while heap:
+            freq_num = heapq.heappop(heap)
+            result.append(freq_num[1])
+        return result
