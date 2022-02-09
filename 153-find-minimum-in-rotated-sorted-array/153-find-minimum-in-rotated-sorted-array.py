@@ -1,6 +1,7 @@
 # Date: 2/8/22
 # 30m 3
 class Solution:
+    # Pattern: binary search
     # Time = O(logn)
     # Space = O(1)
     def findMin(self, nums: List[int]) -> int:
