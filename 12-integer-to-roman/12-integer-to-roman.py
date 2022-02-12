@@ -1,5 +1,7 @@
 class Solution:
-    # 58 -> L
+    # Pattern: hashmap
+    # Time: O(1)
+    # Space: O(1)
     def intToRoman(self, num: int) -> str:
         rom_dict = {
             'I': 1,
