@@ -1,4 +1,9 @@
+# Date: 2/12/22
+# 30m 4
 class Solution:
+    # Pattern: binary search
+    # Time = O(logn)
+    # Space = O(1)
     def findPeakElement(self, nums: List[int]) -> int:
         N = len(nums)
         low = 0
