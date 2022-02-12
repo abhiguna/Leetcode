@@ -1,4 +1,9 @@
+# Date: 2/12/22
+# 30m 5
 class Solution:
+    # Pattern: dynamic programming
+    # Time = O(n)
+    # Space = O(1)
     def rob(self, nums: List[int]) -> int:
         N = len(nums)
         no_rob = 0
