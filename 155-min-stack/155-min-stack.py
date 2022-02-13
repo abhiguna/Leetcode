@@ -1,3 +1,5 @@
+# Date: 2/13/22
+# 15m 5
 
 class MinStack:
     # Time = O(1)
