@@ -1,4 +1,9 @@
+# Date: 2/13/22
+# 15m 5
 class Solution:
+    # Pattern: stack
+    # Time = O(n)
+    # Space = O(n)
     def isValid(self, s: str) -> bool:
         stack = []
         paren_dict = {
