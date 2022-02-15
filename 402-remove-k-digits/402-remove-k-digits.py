@@ -1,4 +1,9 @@
+# Date: 2/14/22
+# 20m 3
 class Solution:
+    # Pattern: stack
+    # Time = O(n + k)
+    # Space = O(n)
     def removeKdigits(self, num: str, k: int) -> str:
         stack = []
         N = len(num)
