@@ -1,4 +1,5 @@
-
+# Date: 2/16/22
+# 20m 3
 class Solution:
     # Pattern: Stack
     # Time = O(n)
@@ -11,7 +12,7 @@ class Solution:
                 if cur == "..":
                     if stack:
                         stack.pop()
-                elif cur and cur not in "/.":
+                elif cur and cur != ".":
                     stack.append(cur)
                 cur = ""
             else:
