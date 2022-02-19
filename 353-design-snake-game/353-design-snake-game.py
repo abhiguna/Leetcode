@@ -11,6 +11,7 @@ class SnakeGame:
     # width --> check boundary
     # height --> check boundary
     
+    # Time: 
     def __init__(self, width: int, height: int, food: List[List[int]]):
         self.snake = deque([(0, 0)])
         self.snake_set = {(0,0) : 1}
@@ -32,7 +33,7 @@ class SnakeGame:
             return -1
         
         next_food_item = self.food[self.food_idx] if self.food_idx < len(self.food) else None
-        if self.food_idx < len(self.food) and next_food_item[0] == newHead[0] and   next_food_item[1] == newHead[1]:
+        if next_food_item and next_food_item[0] == newHead[0] and   next_food_item[1] == newHead[1]:
             self.food_idx += 1
         else:
             tail = self.snake.pop()
