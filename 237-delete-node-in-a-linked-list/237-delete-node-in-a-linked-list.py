@@ -4,9 +4,13 @@
 #         self.val = x
 #         self.next = None
 
-# 4->5->1->9
-# 4->1->9
+# Date: 2/19/22
+# Optimal
+# 15m 5
 class Solution:
+    # Pattern: linked lists
+    # Time = O(1)
+    # Space = O(1)
     def deleteNode(self, node):
         """
         :type node: ListNode
@@ -16,7 +20,6 @@ class Solution:
             return
         
         next_next_node = node.next.next
-        node.next.next = None
         node.val = node.next.val
         node.next = next_next_node
         
