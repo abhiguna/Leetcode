@@ -1,5 +1,7 @@
 from collections import deque
 
+# Date: 2/18/22
+# 20m 3
 class SnakeGame:
 
     # next_position --> (r, c) : local var
@@ -11,7 +13,8 @@ class SnakeGame:
     # width --> check boundary
     # height --> check boundary
     
-    # Time: 
+    # Time: O(1)
+    # Space = O(1)
     def __init__(self, width: int, height: int, food: List[List[int]]):
         self.snake = deque([(0, 0)])
         self.snake_set = {(0,0) : 1}
@@ -21,6 +24,8 @@ class SnakeGame:
         self.food_idx = 0
         self.movement = {'U':[-1,0], 'L':[0,-1], 'R':[0,1], 'D':[1,0]}
 
+    # Time = O(1)
+    # Space = O(W*H + N), W = width, H = height, and N = len(food)
     def move(self, direction: str) -> int:
         newHead = (self.snake[0][0] + self.movement[direction][0],
                   self.snake[0][1] + self.movement[direction][1])
