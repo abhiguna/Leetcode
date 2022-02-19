@@ -4,12 +4,16 @@
 #         self.val = val
 #         self.next = next
 class Solution:
+    # Time = O(n)
+    # Space = O(1)
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        def reverseRecursive(prev, curr):
-            if not curr:
-                return prev
-            next_node = curr.next
-            curr.next = prev
-            return reverseRecursive(curr, next_node)
-        head = reverseRecursive(None, head)
-        return head
+        if not head:
+            return None
+        prev_node = None
+        curr_node = head
+        while curr_node:
+            next_node = curr_node.next
+            curr_node.next = prev_node
+            prev_node = curr_node
+            curr_node = next_node
+        return prev_node
