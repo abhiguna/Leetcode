@@ -18,10 +18,8 @@ class Solution:
         """
         if not node:
             return
-        
-        next_next_node = node.next.next
         node.val = node.next.val
-        node.next = next_next_node
+        node.next =  node.next.next
         
         return
         
