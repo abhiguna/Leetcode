@@ -6,19 +6,13 @@
 
 class Solution:
     # Time = O(m + n) -> m = len(listA), n = len(listB)
-    # Space = O(m) 
+    # Space = O(1) 
     def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> Optional[ListNode]:
-        seen_nodes = set()
         runner_a = headA
         runner_b = headB
         
-        while runner_a:
-            seen_nodes.add(runner_a)
-            runner_a = runner_a.next 
+        while runner_a != runner_b:
+            runner_a = headB if not runner_a else runner_a.next
+            runner_b = headA if not runner_b else runner_b.next 
         
-        while runner_b:
-            if runner_b in seen_nodes:
-                return runner_b
-            runner_b = runner_b.next 
-        
-        return None
+        return runner_a
