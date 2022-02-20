@@ -7,48 +7,21 @@ class Node:
         self.random = random
 """
 
-from collections import defaultdict
-
-# Date: 2/20/22
-# Optimal
-# 20m 5
 class Solution:
-    # Pattern: hashmap
-    # Time = O(n)
-    # Space = O(n)
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
-        output = Node(0)
-        tail = output
+        oldToCopy = { None : None }
         
-        node_dict = defaultdict()
-        curr_node = head
+        cur = head
+        while cur:
+            copy = Node(cur.val)
+            oldToCopy[cur] = copy
+            cur = cur.next 
         
-        while curr_node:
-            if curr_node not in node_dict:
-                new_node = Node(curr_node.val)
-                node_dict[curr_node] = new_node
-            else:
-                new_node = node_dict[curr_node]
-            tail.next = new_node
-            tail = tail.next
-            if curr_node.next and curr_node.next not in node_dict:
-                next_node = Node(curr_node.next.val)
-                node_dict[curr_node.next] = next_node
-            elif curr_node.next in node_dict:
-                next_node = node_dict[curr_node.next]
-            else:
-                next_node = None
-            new_node.next = next_node
-            if curr_node.random and curr_node.random not in node_dict:
-                random_node = Node(curr_node.random.val)
-                node_dict[curr_node.random] = random_node
-            elif curr_node.random in node_dict:
-                random_node = node_dict[curr_node.random]
-            else:
-                random_node = None
-            new_node.random = random_node
-            
-            curr_node = curr_node.next
-            
-        return output.next
-            
+        cur = head
+        while cur:
+            copy = oldToCopy[cur]
+            copy.next = oldToCopy[cur.next]
+            copy.random = oldToCopy[cur.random]
+            cur = cur.next
+        
+        return oldToCopy[head]
