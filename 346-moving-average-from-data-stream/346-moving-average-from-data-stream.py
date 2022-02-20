@@ -1,31 +1,21 @@
-class Node:
-    def __init__(self, val=0):
-        self.val = val
-        self.next = None
 
+# Pattern: circular-queue
 class MovingAverage:
 
     def __init__(self, size: int):
-        self.cap = size
+        self.size = size
+        self.head = 0
+        self.window_sum = 0
+        self.queue = [0] * self.size
         self.count = 0
-        self.stream = Node(0)
-        self.tail = self.head = self.stream
-        self.sum = 0
         
     def next(self, val: int) -> float:
-        self.tail.next = Node(val)
-        self.tail = self.tail.next
         self.count += 1
-        if self.count == 1:
-            self.head = self.tail
-        self.sum += val
-        if self.count > self.cap:
-            self.sum -= self.head.val
-            self.head = self.head.next
-            if self.count == 1:
-                self.tail = self.head = self.stream
-            self.count -= 1
-        return self.sum / self.count
+        self.tail = (self.head + 1) % self.size
+        self.window_sum = self.window_sum - self.queue[self.tail] + val
+        self.head = (self.head + 1) % self.size
+        self.queue[self.head] = val
+        return self.window_sum / min(self.count, self.size)
 
 
 # Your MovingAverage object will be instantiated and called as such:
