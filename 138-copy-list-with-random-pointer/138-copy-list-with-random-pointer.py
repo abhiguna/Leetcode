@@ -9,7 +9,13 @@ class Node:
 
 from collections import defaultdict
 
+# Date: 2/20/22
+# Optimal
+# 20m 5
 class Solution:
+    # Pattern: hashmap
+    # Time = O(n)
+    # Space = O(n)
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         output = Node(0)
         tail = output
