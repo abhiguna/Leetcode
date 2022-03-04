@@ -1,5 +1,8 @@
 from collections import deque
 
+# Time = O(n)
+# Space = O(n)
+
 class Solution:
     def isValid(self, s: str) -> bool:
         paran_matcher = {
