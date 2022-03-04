@@ -1,23 +1,22 @@
-# Date: 2/13/22
-# 15m 5
+from collections import deque
+
 class Solution:
-    # Pattern: stack
-    # Time = O(n)
-    # Space = O(n)
     def isValid(self, s: str) -> bool:
-        stack = []
-        paren_dict = {
-            ')':'(', 
-            ']':'[', 
-            '}':'{'
+        paran_matcher = {
+            ')': '(',
+            '}': '{',
+            ']': '['
         }
-        for paren in s:
-            if paren not in paren_dict: # Open paren
-                stack.append(paren)
-            else: # Close paren
-                if not stack: # Empty stack
+        stack = deque()
+        for p in s:
+            if p not in paran_matcher:
+                # opening parantheses
+                stack.append(p)
+            else:
+                # closing parantheses
+                if not stack:
                     return False
-                open_paren = stack.pop()
-                if open_paren != paren_dict[paren]: # No match
+                top = stack.pop()
+                if top != paran_matcher[p]:
                     return False
         return len(stack) == 0
