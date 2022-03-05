@@ -14,7 +14,7 @@ class Solution:
             return "0"
         
         for n in num:
-            while stack and k > 0 and int(n) < int(stack[-1]):
+            while stack and k > 0 and n < stack[-1]:
                 stack.pop()
                 k -= 1
     
