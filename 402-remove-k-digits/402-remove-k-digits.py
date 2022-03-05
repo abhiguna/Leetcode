@@ -1,5 +1,8 @@
 from collections import deque
 
+# Optimal
+# Time = O(n + k) | Space = O(n)
+
 class Solution:
     # stack
     # remove_mode
@@ -21,5 +24,5 @@ class Solution:
             stack.pop()
             k -= 1
         
-        return str(int("".join(stack)))
+        return "".join(stack).lstrip('0') or "0"
         
