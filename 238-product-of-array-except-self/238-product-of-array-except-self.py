@@ -1,25 +1,32 @@
-# Optimal Solution
+from collections import *
 
-# Date: 2/6/22
-# 30m 3
 class Solution:
-    # Pattern: left-right
-    # Time = O(n)
-    # Space = O(1)
+    
+    # Time = O(N)
+    # Space = O(N)
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         N = len(nums)
-        answer = [0]*N
-        answer[0] = 1
+
+        left_product = defaultdict(int)
+        left_product[-1] = 1
         
-        for i in range(1, N):
-            answer[i] = answer[i-1] * nums[i-1]
-        suffix = 1
+        right_product = defaultdict(int)
+        right_product[N] = 1
         
-        for i in range(N-1, -1, -1):
-            answer[i] *= suffix
-            suffix *= nums[i]
-            
-        return answer
+        # Compute the left and right product
+        curr_product = 1
+        for i in range(N):
+            curr_product *= nums[i]
+            left_product[i] = curr_product
         
+        curr_product = 1
+        for i in range(N - 1, -1, -1):
+            curr_product *= nums[i]
+            right_product[i] = curr_product
         
+        res = []
+        # Compute the result array
+        for i in range(N):
+            res.append(left_product[i-1] * right_product[i+1])
         
+        return res
