@@ -1,30 +1,30 @@
-# Date: 2/8/22
-# 30m 3
 class Solution:
-    # Pattern: binary search
-    # Time = O(logn)
+    
+    # Time = O(logN)
     # Space = O(1)
     def findMin(self, nums: List[int]) -> int:
-        if len(nums) == 1:
-            return nums[0]
+        N = len(nums)
         
-        low = 0
-        high = len(nums) - 1
-        mid_left = -math.inf
-        mid_right = -math.inf
-        while low <= high:
-            mid = (low+high) // 2
-            if mid > 0:
-                mid_left = nums[mid - 1]
-            if mid + 1 < len(nums):
-                mid_right = nums[mid + 1]
+        start = 0
+        end = N - 1
+        res = math.inf
+        
+        while start <= end:
+            # No rotations
+            if nums[start] <= nums[end]:
+                res = min(res, nums[start])
+                break
+                
+            # Rotated Case
+            mid = start + (end - start) // 2
+            res = min(res, nums[mid])
             
-            if nums[high] < nums[low]: # Rotated
-                if nums[mid] < nums[low]:
-                    high = mid
-                else:
-                    low = mid + 1
-            else: # Not rotated
-                return nums[low]
-        return nums[low]
-    
+            # Sorted on the left, search right side
+            if nums[mid] >= nums[start]:
+                start = mid + 1
+            
+            # Sorted on the right, search the left side
+            else:
+                end = mid - 1
+            
+        return res
