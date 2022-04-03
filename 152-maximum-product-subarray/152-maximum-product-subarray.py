@@ -1,25 +1,20 @@
 class Solution:
     
-    # Time = O(N)
-    # Space = O(1)
     def maxProduct(self, nums: List[int]) -> int:
         N = len(nums)
         
-        # Stores the max value in nums
-        res = max(nums)
+        # Keep track of the max_product as well as the curr_max and curr_min
+        # product of a previous subarray
         
-        # Keep track of the curr_max and curr_min of subarray ending at idx i
-        curr_max = 1
-        curr_min = 1
+        max_product = nums[0]
+        curr_max = nums[0]
+        curr_min = nums[0]
         
-        for i in range(N):
-            temp = nums[i] * curr_max
+        for i in range(1, N):
+            temp = curr_max
+            curr_max = max(nums[i], curr_min * nums[i], curr_max * nums[i])
+            curr_min = min(nums[i], curr_min * nums[i], temp * nums[i])
             
-            # Update curr_max and curr_min
-            curr_max = max(nums[i], nums[i] * curr_max, nums[i] * curr_min)
-            curr_min = min(nums[i], temp, nums[i] * curr_min)
-            
-            # Update res
-            res = max(res, curr_max, curr_min)
+            max_product = max(max_product, curr_max, curr_min)
         
-        return res
+        return max_product
