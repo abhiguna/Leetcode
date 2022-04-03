@@ -3,18 +3,22 @@ class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         N = len(nums)
         
-        # Keep track of the max_product as well as the curr_max and curr_min
-        # product of a previous subarray
+        # Set max_product to the max value in the list
+        max_product = max(nums)
         
-        max_product = nums[0]
-        curr_max = nums[0]
-        curr_min = nums[0]
+        # Keep track of curr_max and curr_min in the given list
+        curr_max = 1
+        curr_min = 1
         
-        for i in range(1, N):
+        for i in range(N):
+            # Store curr_max before updating
             temp = curr_max
+            
+            # Update curr_max and curr_min
             curr_max = max(nums[i], curr_min * nums[i], curr_max * nums[i])
             curr_min = min(nums[i], curr_min * nums[i], temp * nums[i])
             
+            # Update max_product
             max_product = max(max_product, curr_max, curr_min)
         
         return max_product
