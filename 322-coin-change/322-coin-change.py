@@ -5,10 +5,6 @@ class Solution:
     # Time = O(N * M)
     # Space = O(N)
     def coinChange(self, coins: List[int], amount: int) -> int:
-        # Base
-        if amount == 0:
-            return 0
-        
         M = len(coins)
         N = amount
         
@@ -17,8 +13,8 @@ class Solution:
         
         for i in range(1, N + 1):
             for j in range(M):
-                # Amount is smaller than coins or if diff not coverable
-                if i < coins[j] or dp[i - coins[j]] == math.inf:
+                # Amount is smaller than coins
+                if i < coins[j]:
                     continue
                 
                 num_coins_req = 1 + dp[i - coins[j]]
