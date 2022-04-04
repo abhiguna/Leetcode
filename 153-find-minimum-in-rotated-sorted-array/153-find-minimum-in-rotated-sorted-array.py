@@ -10,21 +10,19 @@ class Solution:
         res = math.inf
         
         while start <= end:
-            # No rotations
+            # No net rotations
             if nums[start] <= nums[end]:
                 res = min(res, nums[start])
                 break
-                
-            # Rotated Case
+            
             mid = start + (end - start) // 2
             res = min(res, nums[mid])
-            
-            # Sorted on the left, search right side
+            # Rotations and mid in left sorted part -> search right
             if nums[mid] >= nums[start]:
                 start = mid + 1
-            
-            # Sorted on the right, search the left side
+            # Rotations and mid in right sorted part -> search left
             else:
                 end = mid - 1
-            
+        
         return res
+            
