@@ -1,18 +1,23 @@
+import bisect
+
 class Solution:
     
-    # Time = O(N^2)
+    # Time = O(NlogN)
     # Space = O(N)
     
     def lengthOfLIS(self, nums: List[int]) -> int:
         N = len(nums)
         
-        dp = [1] * N
-        max_len = 1
+        subsequence = []
         
-        for i in range(N - 1, -1, -1):
-            for j in range(i + 1, N):
-                if nums[j] > nums[i]:
-                    dp[i] = max(dp[i], 1 + dp[j])
-                    max_len = max(max_len, dp[i])
+        for num in nums:
+            idx = bisect.bisect_left(subsequence, num)
+            
+            # If num is greater than all the numbers in the subsequence, add it
+            if idx == len(subsequence):
+                subsequence.append(num)
+            # Replace it with the first element that is greater than num
+            else:
+                subsequence[idx] = num
         
-        return max_len
+        return len(subsequence)
