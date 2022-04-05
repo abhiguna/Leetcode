@@ -1,5 +1,7 @@
 class Solution:
     
+    # Time = O(N*M), N = len(s), M = len(wordDict)
+    # Space = O(N)
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         N = len(s)
         
