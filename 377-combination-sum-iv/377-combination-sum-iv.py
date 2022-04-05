@@ -7,15 +7,15 @@ class Solution:
         M = len(nums)
         
         dp = [0 for i in range(N+1)]
+        # Base
+        dp[0] = 1
         
         for i in range(1, N+1):
             combinations = 0
             
             for num in nums:
-                if i > num:
+                if i >= num:
                     combinations += dp[i - num]
-                elif i == num:
-                    combinations += 1
             
             dp[i] = combinations
         
