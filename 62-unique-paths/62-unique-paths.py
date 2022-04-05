@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(N*M)
+    # Space = O(N*M)
     def uniquePaths(self, m: int, n: int) -> int:
         dp = [[0 for j in range(m+1)] for i in range(n+1)]
         
