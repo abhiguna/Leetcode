@@ -6,8 +6,7 @@ class Solution:
         N = len(nums)
         missing_num = N
         
-        for idx, num in enumerate(nums):
-            missing_num ^= idx ^ num
+        for idx, value in enumerate(nums):
+            missing_num ^= idx ^ value
         
         return missing_num
-        
