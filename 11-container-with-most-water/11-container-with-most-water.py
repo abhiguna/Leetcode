@@ -4,16 +4,19 @@ class Solution:
     # Space = O(1)
     def maxArea(self, height: List[int]) -> int:
         N = len(height)
-        start = 0
-        end = N - 1
+        curr_area = 0
         max_area = 0
         
-        while start <= end:
-            max_area = max(max_area, (end - start) * min(height[start], height[end]))
+        left = 0
+        right = N - 1
+        
+        while left <= right:
+            curr_area = (right - left) * min(height[left], height[right])
+            max_area = max(max_area, curr_area)
             
-            if height[start] < height[end]:
-                start += 1
+            if height[left] < height[right]:
+                left += 1
             else:
-                end -= 1
+                right -= 1
         
         return max_area
