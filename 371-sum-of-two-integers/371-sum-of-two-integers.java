@@ -6,7 +6,8 @@ class Solution {
         while (b != 0) {
             int temp = a;
             a = a ^ b;
-            b = (temp & b) << 1;
+            b = temp & b;
+            b <<= 1;
         }
         return a;
     }
