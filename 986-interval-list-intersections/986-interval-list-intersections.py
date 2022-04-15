@@ -1,26 +1,26 @@
-# Date: 2/2/22
-# 30m 2
 class Solution:
-    # Time = O(m + n)
-    # Space = O(m + n)
+    
+    # Time = O(N)
+    # Space = O(1)
     def intervalIntersection(self, firstList: List[List[int]], secondList: List[List[int]]) -> List[List[int]]:
-        m = len(firstList)
-        n = len(secondList)
-        idx1 = 0
-        idx2 = 0
+        M = len(firstList)
+        N = len(secondList)
+        i = 0
+        j = 0
         intersections = []
-        while idx1<m and idx2<n:
-            start = max(firstList[idx1][0], secondList[idx2][0])
-            end = min(firstList[idx1][1], secondList[idx2][1])
-            if start <= end:
-                intersections.append([start, end])
-            
-            if firstList[idx1][1] <= secondList[idx2][1]:
-                idx1 += 1
-            else:
-                idx2 += 1
-        return intersections
         
+        while i < M and j < N:
+            i_overlaps_j = firstList[i][0] >= secondList[j][0] and firstList[i][0] <= secondList[j][1]
+            j_overlaps_i = secondList[j][0] >= firstList[i][0] and secondList[j][0] <= firstList[i][1]
             
+            # Check overlap
+            if i_overlaps_j or j_overlaps_i:
+                intersections.append([max(firstList[i][0], secondList[j][0]), min(firstList[i][1], secondList[j][1])])
             
-            
+            # Look at next interval
+            if firstList[i][1] < secondList[j][1]:
+                i += 1
+            else:
+                j += 1
+        
+        return intersections
