@@ -1,4 +1,6 @@
 class Solution:
+    # Time = Exponential
+    # Space = Exponential
     def solveNQueens(self, n: int) -> List[List[str]]:
         res = []
         solution = [None] * n
