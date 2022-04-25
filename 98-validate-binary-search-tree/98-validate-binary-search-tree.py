@@ -4,38 +4,29 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+import math
+
 class Solution:
-    # Time = O(NlogN)
-    # Space = O(N)
     def isValidBST(self, root: Optional[TreeNode]) -> bool:
-        in_list = []
         
-        def inorder(node):
-            nonlocal in_list
+        def dfs(node, lower_bound, upper_bound):
+            # Base case
+            if not node:
+                return True
             
-            # Base case ~ leaf node:
-            if not node.left and not node.right:
-                in_list.append(node.val)
-                return
-            
-            # Recursive case ~ internal node
-            if node.left:
-                inorder(node.left)
-            
-            in_list.append(node.val)
-            
-            if node.right:
-                inorder(node.right)
-            
-            return
-        
-        inorder(root)
-        
-        sorted_list = sorted(in_list)
-        
-        # Check duplicates
-        for i in range(1, len(sorted_list)):
-            if sorted_list[i] == sorted_list[i-1]:
+            # Recursive case 
+            if node.val <= lower_bound or node.val >= upper_bound:
                 return False
             
-        return in_list == sorted_list
+            is_left_valid = True
+            is_right_valid = True
+            
+            if node.left:
+                is_left_valid = dfs(node.left, lower_bound, node.val)
+            
+            if node.right:
+                is_right_valid = dfs(node.right, node.val, upper_bound)
+            
+            return is_left_valid and is_right_valid
+        
+        return dfs(root, -math.inf, math.inf)
