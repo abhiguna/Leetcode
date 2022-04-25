@@ -5,6 +5,8 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    # Time = O(N)
+    # Space = O(H), H: height of the tree ~ O(logN) for balanced tree / O(N) for unbalanced tree
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         # Edge case
         if not root:
