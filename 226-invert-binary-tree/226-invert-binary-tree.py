@@ -25,9 +25,8 @@ class Solution:
                 dfs(node.right)
             
             # Swap
-            temp = node.right
-            node.right = node.left
-            node.left = temp
+            node.left, node.right = node.right, node.left
+            
             return
         
         dfs(root)
