@@ -8,25 +8,22 @@ class Solution:
     # Time = O(N)
     # Space = O(N)
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        res = []
+        count = 0
+        stack = []
+        curr = root
         
-        def inorder(node):
-            nonlocal res
+        while stack or curr:
+            # Left subtree
+            while curr:
+                stack.append(curr)
+                curr = curr.left 
             
-            # Base case:
-            if not node.left and not node.right:
-                res.append(node.val)
-                return
+            # Node
+            curr = stack.pop()
+            count += 1
+            if count == k:
+                return curr.val 
             
-            # Recursive case
-            if node.left:
-                inorder(node.left)
-            
-            res.append(node.val)
-            
-            if node.right:
-                inorder(node.right)
-            
-        inorder(root)
-        return res[k-1]
-                
+            curr = curr.right 
+        
+        return -1
