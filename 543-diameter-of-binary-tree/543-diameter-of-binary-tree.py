@@ -12,11 +12,8 @@ class Solution:
             nonlocal diameter
             
             # Base cases
-            if not node:
+            if not node: # Cheeky ;) 
                 return -1
-            
-            if not node.left and not node.right:
-                return 0
             
             # Recursive case
             left_height = dfs(node.left)
