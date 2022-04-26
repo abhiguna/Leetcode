@@ -11,25 +11,20 @@ class Solution:
         def dfs(node):
             nonlocal diameter
             
-            # Base case
+            # Base cases
+            if not node:
+                return -1
+            
             if not node.left and not node.right:
                 return 0
             
             # Recursive case
-            left_height = 0
-            right_height = 0
-            longest_path = 0
+            left_height = dfs(node.left)
+            right_height = dfs(node.right)
             
-            if node.left:
-                left_height = 1 + dfs(node.left)
+            diameter = max(diameter, left_height + right_height + 2)
             
-            if node.right:
-                right_height = 1 + dfs(node.right)
-            
-            longest_path = left_height + right_height
-            diameter = max(diameter, longest_path)
-            
-            return max(left_height, right_height)
+            return 1 + max(left_height, right_height)
         
         dfs(root)
         return diameter
