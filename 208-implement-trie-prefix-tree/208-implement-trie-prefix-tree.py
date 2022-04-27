@@ -1,32 +1,49 @@
-from collections import defaultdict 
-
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+    
 class Trie:
 
     def __init__(self):
-        self.word_map = set()
-        self.prefix_map = defaultdict(list)
-
+        self.root = TrieNode()
+    
+    # Time = O(N), N: len(word)
+    # Space = O(N)
     def insert(self, word: str) -> None:
-        if word in self.word_map:
-            return None
+        curr = self.root
         
-        self.word_map.add(word)
-        for i in range(1, len(word) + 1):
-            self.prefix_map[word[:i]].append(word)
+        for c in word:
+            if c not in curr.children:
+                curr.children[c] = TrieNode()
+            curr = curr.children[c]
         
-        return None
-        
-        
-
+        curr.is_end_of_word = True
+        return
+    
+    # Time = O(N)
+    # Space = O(1)
     def search(self, word: str) -> bool:
-        return word in self.word_map
+        curr = self.root
         
+        for c in word:
+            if c not in curr.children:
+                return False
+            curr = curr.children[c]
+        
+        return curr.is_end_of_word
 
+    # Time = O(M), M: len(prefix)
+    # Space = O(1)
     def startsWith(self, prefix: str) -> bool:
-        # print(self.prefix_map)
-        word_list = self.prefix_map[prefix]
-        return len(word_list) > 0
+        curr = self.root 
         
+        for c in prefix:
+            if c not in curr.children:
+                return False
+            curr = curr.children[c]
+        
+        return True
 
 
 # Your Trie object will be instantiated and called as such:
