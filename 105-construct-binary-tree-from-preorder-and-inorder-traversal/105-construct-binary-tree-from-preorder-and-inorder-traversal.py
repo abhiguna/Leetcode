@@ -5,15 +5,28 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N^2)
+    # Time = O(N)
     # Space = O(N)
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
-        if not preorder or not inorder:
-            return None
+        idx_map = defaultdict(int)
         
-        root = TreeNode(preorder[0])
-        mid = inorder.index(preorder[0])
-        root.left = self.buildTree(preorder[1:mid+1], inorder[:mid])
-        root.right = self.buildTree(preorder[mid+1:], inorder[mid+1:])
+        for idx, val in enumerate(inorder):
+            idx_map[val] = idx
         
-        return root
+        preorder_idx = 0
+        
+        def dfs(start, end):
+            nonlocal preorder_idx 
+            
+            # Base case
+            if start > end:
+                return None
+            
+            root = TreeNode(preorder[preorder_idx])
+            preorder_idx += 1
+            
+            root.left = dfs(start, idx_map[root.val] - 1)
+            root.right = dfs(idx_map[root.val] + 1, end)
+            return root
+        
+        return dfs(0, len(preorder) - 1)
