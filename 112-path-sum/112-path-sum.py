@@ -12,24 +12,24 @@ class Solution:
         if not root:
             return False
         
-        def dfs(node, curr_sum):
+        res = [False]
+        def dfs(node, target):
+            nonlocal res
+            target -= node.val
+            
             # Base case: leaf node
             if not node.left and not node.right:
-                curr_sum += node.val
-                if curr_sum == targetSum:
-                    return True
-                return False
-            
-            in_left_subtree = False
-            in_right_subtree = False
+                if target == 0:
+                    res[0] = True
             
             if node.left:
-                in_left_subtree = dfs(node.left, curr_sum + node.val)
+                dfs(node.left, target)
             
             if node.right:
-                in_right_subtree = dfs(node.right, curr_sum + node.val)
+                dfs(node.right, target)
             
-            return in_left_subtree or in_right_subtree
+            return
     
-        return dfs(root, 0)
+        dfs(root, targetSum)
+        return res[0]
             
