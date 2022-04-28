@@ -13,7 +13,7 @@ class Solution:
         
         while queue:
             num_nodes = len(queue)
-            level_sum = 0
+            level_sum = 0.0
             
             for _ in range(num_nodes):
                 curr_node = queue.popleft()
