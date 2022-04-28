@@ -7,8 +7,8 @@
 class Solution:
     def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
         # Edge case
-        if not root.left and not root.right:
-            return True
+        # if not root.left and not root.right:
+        #     return True
         
         queue = deque([(root, 1)])
         prev_idx = None
