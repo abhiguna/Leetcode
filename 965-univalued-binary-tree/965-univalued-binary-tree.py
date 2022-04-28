@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+from collections import deque
+
+class Solution:
+    # Time = O(N)
+    # Space = O(N)
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        target_val = root.val
+        queue = deque([root])
+        
+        while queue:
+            num_nodes = len(queue)
+            
+            for _ in range(num_nodes):
+                curr_node = queue.popleft()
+                
+                if curr_node.val != target_val:
+                    return False
+                
+                if curr_node.left:
+                    queue.append(curr_node.left)
+                    
+                if curr_node.right:
+                    queue.append(curr_node.right)
+        
+        return True
