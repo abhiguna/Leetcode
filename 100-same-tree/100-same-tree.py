@@ -4,26 +4,46 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
+
 class Solution:
     
-    # Time = O(min(M, N)), M: # of nodes in p, N: # of nodes in q
-    # Space = O(min(Hp, Hq)), Hp: height of p, Hq: height of q
+    # Time = O(N)
+    # Space = O(N)
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        # Base cases:
         if not p and not q:
             return True
-        
-        if (p and not q) or (not p and q) or (p.val != q.val):
+        elif p and not q:
+            return False
+        elif not p and q:
             return False
         
-        is_left_valid = self.isSameTree(p.left, q.left)
-        if not is_left_valid:
-            return False
+        queue = deque([(p, q)])
         
-        is_right_valid = self.isSameTree(p.right, q.right)
-        if not is_right_valid:
-            return False
+        while queue:
+            num_nodes = len(queue)
+            
+            for _ in range(num_nodes):
+                node_p, node_q = queue.popleft()
+                
+                if node_p.val != node_q.val:
+                    return False
+                
+                # Both have left child
+                if node_p.left and node_q.left:
+                    queue.append((node_p.left, node_q.left))
+                # One has left child while one doesn;t
+                elif node_p.left or node_q.left:
+                    return False
+                
+                if node_p.right and node_q.right:
+                    queue.append((node_p.right, node_q.right))
+                elif node_p.right or node_q.right:
+                    return False
         
-        return p.val == q.val and is_left_valid and is_right_valid
-
-    
+        return True
+                
+                
+                
+                
+            
