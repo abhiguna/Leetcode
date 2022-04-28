@@ -9,7 +9,7 @@ class Node:
 class Solution:
     
     # Time = O(N)
-    # Space = O(N)
+    # Space = O(W) ~ O(N) in worst case
     def levelOrder(self, root: 'Node') -> List[List[int]]:
         if not root:
             return []
