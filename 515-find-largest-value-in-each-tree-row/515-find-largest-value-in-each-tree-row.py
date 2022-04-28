@@ -7,6 +7,8 @@
 from collections import deque
 import math
 
+# Time = O(N)
+# Space = O(N)
 class Solution:
     def largestValues(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
