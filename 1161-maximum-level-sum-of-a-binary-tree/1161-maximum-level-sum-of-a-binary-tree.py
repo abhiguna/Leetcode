@@ -13,7 +13,7 @@ class Solution:
     # Space = O(N)
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
         max_sum = -math.inf
-        res_level = -1
+        min_level = 0
         
         curr_level = 0
         queue = deque([root])
@@ -36,6 +36,6 @@ class Solution:
             
             if level_sum > max_sum:
                 max_sum = level_sum
-                res_level = curr_level
+                min_level = curr_level
         
-        return res_level
+        return min_level
