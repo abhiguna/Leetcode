@@ -5,37 +5,33 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    # Time = O(N)
-    # Space = O(N)
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root:
             return []
         
         res = []
-        q = deque([root])
+        queue = deque([root])
         is_lr = True
         
-        while q:
-            num_nodes = len(q)
+        while queue:
+            num_nodes = len(queue)
             curr_level = deque()
             
-            for i in range(num_nodes):
-                node = q.popleft()
+            for _ in range(num_nodes):
+                curr_node = queue.popleft()
                 
                 if is_lr:
-                    curr_level.append(node.val)
+                    curr_level.append(curr_node.val)
                 else:
-                    curr_level.appendleft(node.val)
-                    
-                if node.left:
-                    q.append(node.left)
+                    curr_level.appendleft(curr_node.val)
                 
-                if node.right:
-                    q.append(node.right)
+                if curr_node.left:
+                    queue.append(curr_node.left)
+                
+                if curr_node.right:
+                    queue.append(curr_node.right)
             
-            res.append(curr_level)
             is_lr = not is_lr
+            res.append(curr_level)
         
         return res
-        
