@@ -4,7 +4,13 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+from collections import deque
+
 class Solution:
+    
+    # Time = O(N)
+    # Space = O(N)
     def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
         # Edge case
         if not root.left and not root.right:
