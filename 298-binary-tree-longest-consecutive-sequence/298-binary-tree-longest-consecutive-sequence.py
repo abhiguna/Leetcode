@@ -34,5 +34,5 @@ class Solution:
             return
         
         
-        dfs(root, math.inf, 0)
+        dfs(root, root.val, 0)
         return max_len
