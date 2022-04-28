@@ -20,16 +20,16 @@ class Solution:
             for _ in range(num_nodes):
                 curr_node = queue.popleft()
                 
-                if is_lr:
-                    curr_level.append(curr_node.val)
-                else:
-                    curr_level.appendleft(curr_node.val)
+                curr_level.append(curr_node.val)
                 
                 if curr_node.left:
                     queue.append(curr_node.left)
                 
                 if curr_node.right:
                     queue.append(curr_node.right)
+            
+            if not is_lr:
+                curr_level.reverse()
             
             is_lr = not is_lr
             res.append(curr_level)
