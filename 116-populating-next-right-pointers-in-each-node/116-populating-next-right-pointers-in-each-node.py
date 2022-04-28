@@ -23,12 +23,15 @@ class Solution:
         
         while queue:
             num_nodes = len(queue)
+            prev_node = None
             
             for i in range(num_nodes):
                 curr_node = queue.popleft()
                 
-                if i != num_nodes - 1:
-                    curr_node.next = queue[0]
+                if prev_node:
+                    prev_node.next = curr_node
+                
+                prev_node = curr_node
                 
                 if curr_node.left:
                     queue.append(curr_node.left)
