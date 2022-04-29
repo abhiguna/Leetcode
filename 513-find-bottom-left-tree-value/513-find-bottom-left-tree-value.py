@@ -12,14 +12,14 @@ class Solution:
     # Space = O(N)
     def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
         queue = deque([root])
-        
         while queue:
             num_nodes = len(queue)
-            curr_level = []
+            first_value = None
             
             for i in range(num_nodes):
                 curr_node = queue.popleft()
-                curr_level.append(curr_node.val)
+                if first_value is None:
+                    first_value = curr_node.val
                 
                 if curr_node.left:
                     queue.append(curr_node.left)
@@ -27,7 +27,5 @@ class Solution:
                 if curr_node.right:
                     queue.append(curr_node.right)
             
-            if len(queue) == 0:
-                return curr_level[0]
         
-        return -1
+        return first_value
