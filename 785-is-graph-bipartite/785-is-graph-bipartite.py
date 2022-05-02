@@ -1,33 +1,31 @@
 class Solution:
-    # Time = O(N + M), N: num of nodes, M: num of edges
-    # Space = O(N + M)
-    
+    # Time = O(M + N)
+    # Space = O(N)
     def isBipartite(self, graph: List[List[int]]) -> bool:
         N = len(graph)
-        colored = [-1] * N
-        inv_color = {
-            "Y": "G",
-            "G": "Y"
-        }
+        dist = [-1] * N
         
-        def dfs(src, color):
-            nonlocal colored
-            colored[src] = color
+        def bfs(src):
+            queue = deque([src])
+            dist[src] = 0
             
-            for neighbor in graph[src]:
-                if colored[neighbor] == -1:
-                    is_bipartite = dfs(neighbor, inv_color[colored[src]])
-                    if not is_bipartite:
+            while queue:
+                curr = queue.popleft()
+                
+                for neighbor in graph[curr]:
+                    if dist[neighbor] == -1:
+                        dist[neighbor] = dist[curr] + 1
+                        queue.append(neighbor)
+                    elif dist[curr] == dist[neighbor]:
+                        # Cross edge && odd length cycle
                         return False
-                elif colored[neighbor] == colored[src]:
-                    return False # Not bipartite
             return True
         
         for src in range(N):
-            if colored[src] == -1:
-                is_bipartite = dfs(src, "Y")
+            if dist[src] == -1:
+                is_bipartite = bfs(src)
                 if not is_bipartite:
                     return False
         
         return True
-                
+                    
