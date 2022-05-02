@@ -2,7 +2,7 @@ from collections import deque
 
 class Solution:
     # Time = O(M * N)
-    # Space = O(M + N)
+    # Space = O(min(M, N))
     def numIslands(self, grid: List[List[str]]) -> int:
         M = len(grid)
         N = len(grid[0])
