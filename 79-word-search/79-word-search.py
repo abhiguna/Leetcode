@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(N*M*4^L), L: len(word)
+    # Space = O(L)
     def exist(self, board: List[List[str]], word: str) -> bool:
         M = len(board)
         N = len(board[0])
