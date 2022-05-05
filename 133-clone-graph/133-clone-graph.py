@@ -17,25 +17,18 @@ class Solution:
         
         old_to_new = defaultdict(Node)
         
-        def bfs(node):
-            queue = deque([node])
-            src_cpy = Node(node.val)
-            old_to_new[node] = src_cpy
+        def dfs(node):
+            # Base case
+            if node in old_to_new:
+                return old_to_new[node]
             
-            while queue:
-                curr = queue.popleft()
-                curr_cpy = old_to_new[curr]
-                
-                for nei in curr.neighbors:
-                    if nei in old_to_new:
-                        curr_cpy.neighbors.append(old_to_new[nei])
-                    else:
-                        nei_cpy = Node(nei.val)
-                        curr_cpy.neighbors.append(nei_cpy)
-                        old_to_new[nei] = nei_cpy
-                        queue.append(nei)
+            copy = Node(node.val)
+            old_to_new[node] = copy
             
-            return src_cpy
+            for nei in node.neighbors:
+                copy.neighbors.append(dfs(nei))
+            
+            return copy
         
         
-        return bfs(node)
+        return dfs(node)
