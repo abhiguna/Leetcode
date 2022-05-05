@@ -1,5 +1,5 @@
 class Solution:
-    # Time = O(MlogM)
+    # Time = O(MlogN)
     # Space = O(M + N)
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
         dist = [math.inf for _ in range(n+1)]
