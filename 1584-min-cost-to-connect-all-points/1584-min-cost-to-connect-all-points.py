@@ -14,6 +14,7 @@ class Solution:
                     dist = compute_dist(points[i], points[j])
                     # Undirected graph -> Store two copies of each edge
                     edge_list.append([i, j, dist])
+                    edge_list.append([j, i, dist])
             return
             
         min_cost = [0]
