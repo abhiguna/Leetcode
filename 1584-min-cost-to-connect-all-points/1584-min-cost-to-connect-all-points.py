@@ -1,3 +1,4 @@
+# Approach 2: Kruskal's Algorithm
 class Solution:
     # Time = O(N^2logN)
     # Space = O(N^2)
