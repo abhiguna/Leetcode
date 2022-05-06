@@ -1,46 +1,48 @@
 class Solution:
-    # Time = O(N + M)
-    # Space = O(N + M)
+    # Time = O(M + N)
+    # Space = O(M + N)
+    
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        visited = [-1] * n
-        adj_list = [[] for i in range(n)]
-        parent = [-1] * n
+        M = len(edges)
+        adj_list = [[] for _ in range(n)]
         
-        def build_graph(n, edges):
-            for (src, dest) in edges:
-                # Add two copies of each edge to adj_list
-                adj_list[src].append(dest)
-                adj_list[dest].append(src)
+        def build_graph():
+            for (u,v) in edges:
+                adj_list[u].append(v)
+                adj_list[v].append(u)
             return
         
+        visited = set()
+        parent = [-1] * n
+        timestamp = [0]
+        
         def dfs(src):
-            visited[src] = 1
-            # Visite the first neighbor in a deep way
-            for n in adj_list[src]:
-                if visited[n] == -1:
-                    parent[n] = src
-                    has_cycle = dfs(n)
-                    if has_cycle:
+            visited.add(src)
+            
+            for nei in adj_list[src]:
+                # Neighbor not visited
+                if nei not in visited:
+                    parent[nei] = src
+                    has_cycle = dfs(nei)
+                    if has_cycle: return True
+                else:
+                    # Check for back edge -> cycle!
+                    # For undirected graphs -> compare parents of src and neighbor
+                    if parent[src] != nei:
                         return True
-                elif parent[src] != n:
-                    # Found back edge
-                    return True
+                    
             return False
             
         
-        build_graph(n, edges)
+        build_graph()
         num_components = 0
-        for src in range(n):
-            if visited[src] == -1:
-                # Not visited
+        for v in range(n):
+            if v not in visited:
                 num_components += 1
-                # Checks graph is connected
+                # A tree must be connected!
                 if num_components > 1:
                     return False
-                has_cycle = dfs(src)
-                # Checks graph is acyclic
-                if has_cycle:
-                    return False
+                has_cycle = dfs(v)
+                if has_cycle: return False
         
         return True
-            
