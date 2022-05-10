@@ -1,26 +1,21 @@
-import math
-
 class Solution:
+    # Approach: DP
     
-    # Time = O(N * M)
-    # Space = O(N)
+    # Time = O(A*C)
+    # Space = O(A)
     def coinChange(self, coins: List[int], amount: int) -> int:
-        M = len(coins)
-        N = amount
+        C = len(coins)
+        A = amount
+        table = [math.inf for _ in range(A+1)]
+        # Base case
+        table[0] = 0
         
-        dp = [math.inf] * (N + 1)
-        dp[0] = 0
+        for a in range(1, A+1):
+            for c in coins:
+                if (a - c) >= 0:
+                    table[a] = min(table[a], 1 + table[a-c])
         
-        for i in range(1, N + 1):
-            for j in range(M):
-                # Amount is smaller than coins
-                if i < coins[j]:
-                    continue
-                
-                num_coins_req = 1 + dp[i - coins[j]]
-                dp[i] = min(dp[i], num_coins_req)
-        
-        if dp[N] == math.inf:
+        if table[A] == math.inf:
             return -1
         
-        return dp[N]
+        return table[A]
