@@ -2,7 +2,7 @@ class Solution:
     # Approach: Memoization
     
     # Time = O(M*N)
-    # Space = O(max(N, M))
+    # Space = O(N + M)
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         M = len(obstacleGrid)
         N = len(obstacleGrid[0])
