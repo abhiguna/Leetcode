@@ -1,40 +1,29 @@
 class Solution:
-    # Approach: DP
+    # Approach: Memoization
     
     # Time = O(M*N)
-    # Space = O(M*N)
+    # Space = O(max(N, M))
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
         M = len(obstacleGrid)
         N = len(obstacleGrid[0])
-        table = [0 for j in range(N)]
-        table[0] = 0 if obstacleGrid[0][0] == 1 else 1
         
-        # First row
-        for j in range(1, N):
-            if obstacleGrid[0][j] == 1:
-                # Obstacle exists
-                table[j] = 0
-            else:
-                table[j] = table[j-1]
+        memo = {}
         
-        # Fill the remaining cells
-        for i in range(1, M):
-            prev = table[:]
+        def num_paths(r, c):
+            if (r, c) in memo:
+                return memo[(r, c)]
             
-            if obstacleGrid[i][0] == 1:
-                table[0] = 0
-            else:
-                table[0] = prev[0]
+            # Base cases
+            if r < 0 or c < 0 or r >= M or c >= N:
+                return 0
             
-            temp = table[0]
+            if obstacleGrid[r][c] == 1:
+                return 0
             
-            for j in range(1, N):
-                # Check if obstacle exists at [i][j]
-                if obstacleGrid[i][j] == 1:
-                    temp = 0
-                else:
-                    temp = temp + prev[j]
-                
-                table[j] = temp
+            if r == M - 1 and c == N - 1:
+                return 1
+            
+            memo[(r, c)] = num_paths(r, c+1) + num_paths(r+1, c)
+            return memo[(r, c)]
         
-        return table[N-1]
+        return num_paths(0, 0)
