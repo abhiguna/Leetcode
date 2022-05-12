@@ -2,7 +2,7 @@ class Solution:
     # Approach: Memoization
     
     # Time = O(N*half_total)
-    # Space = O(max(N, half_total))
+    # Space = O(N*half_total)
     def canPartition(self, nums: List[int]) -> bool:
         # Edge case
         if sum(nums) % 2 != 0:
