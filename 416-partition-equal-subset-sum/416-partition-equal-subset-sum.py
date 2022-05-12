@@ -1,8 +1,8 @@
 class Solution:
     # Approach: DP
     
-    # Time = O(N*target)
-    # Space = O(N*target) -> could be optimized further to occupy O(target) aux. space
+    # Time = O(N*target) -> pseudopolynomial
+    # Space = O(N*target)
     def canPartition(self, nums: List[int]) -> bool:
         N = len(nums)
         total = sum(nums)
