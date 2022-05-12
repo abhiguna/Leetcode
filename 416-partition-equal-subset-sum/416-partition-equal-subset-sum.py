@@ -1,37 +1,40 @@
 class Solution:
-    # Approach: DP
+    # Approach: Memoization
     
-    # Time = O(N*target) -> pseudopolynomial
-    # Space = O(N*target)
+    # Time = O(N*half_total)
+    # Space = O(max(N, half_total))
     def canPartition(self, nums: List[int]) -> bool:
-        N = len(nums)
-        total = sum(nums)
-        # Edge case: if total is odd --> cannot divide evenly into two subsets
-        if total % 2 != 0:
+        # Edge case
+        if sum(nums) % 2 != 0:
             return False
         
-        target = total // 2
-        table = [[False for j in range(target+1)] for i in range(N+1)]
+        memo = {}
+        N = len(nums)
+        total = sum(nums)
+        half_total = total // 2
+        memo[(0, 0)] = True
+        
         # Base cases
-        table[0][0] = True # An empty subsets adds up to a target of 0
-        
         # Fill first row
-        for j in range(1, target+1):
-            table[0][j] = False
+        for val in range(1, half_total + 1):
+            memo[(0, val)] = False
+            
+        # Fill first col
+        for size in range(1, N+1):
+            memo[(size, 0)] = True
         
-        # Fill first column
-        for i in range(1, N+1):
-            table[i][0] = False
+        def helper(size, target):
+            if (size, target) in memo:
+                return memo[(size, target)]
+            
+            # Include curr element
+            if target - nums[size-1] >= 0:
+                memo[(size, target)] = helper(size - 1, target - nums[size-1]) or helper(size-1, target)
+            # Exclude curr element
+            else:
+                memo[(size, target)] = helper(size-1, target)
+            
+            return memo[(size, target)]
         
-        # Fill remaining cells
-        for i in range(1, N+1):
-            for val in range(1, target+1):
-                # Two choices: exclude or include the current element
-                exclude = table[i-1][val]
-                include = False
-                if val - nums[i-1] >= 0:
-                    include = table[i-1][val - nums[i-1]]
-                table[i][val] = exclude or include
-        
-        return table[N][target]
-        
+        return helper(N, half_total)
+            
