@@ -17,8 +17,8 @@ class Solution:
         table[3] = 5
         
         for i in range(4, n+1):
-            table[i] = 2*table[i-1] + table[i-3]
+            table[i] = (2*table[i-1] + table[i-3]) % MOD_VAL
         
-        return table[n] % MOD_VAL
+        return table[n] 
         
         
