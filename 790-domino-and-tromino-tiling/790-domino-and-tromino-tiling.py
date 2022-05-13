@@ -1,23 +1,24 @@
 class Solution:
     # Time = O(N)
-    # Space = O(N)
+    # Space = O(N) -> could be optimized further to use O(1) aux. space.
     def numTilings(self, n: int) -> int:
-        # Base cases:
+        # Edge case
         if n <= 2:
             return n
         
-        F = [0 for _ in range(n+1)]
-        L = [0 for _ in range(n+1)]
-        U = [0 for _ in range(n+1)]
+        MOD_VAL = (10**9) + 7
         
-        F[1], F[2] = 1, 2
-        L[1], L[2] = 1, 2
-        U[1], U[2] = 1, 2
+        # table[i] denotes the total number of tilings for a 2 x i board
+        # table[i] = 2*table[i-1] + table[i-3]
+        table = [0 for _ in range(n+1)]
+        # Base cases: Need three base cases
+        table[1] = 1
+        table[2] = 2
+        table[3] = 5
         
-        for idx in range(3, n+1):
-            F[idx] = F[idx-1] + F[idx-2] + L[idx-2] + U[idx-2]
-            L[idx] = F[idx-1] + U[idx-1]
-            U[idx] = F[idx-1] + L[idx-1]
+        for i in range(4, n+1):
+            table[i] = 2*table[i-1] + table[i-3]
         
-        return F[n] % (10**9 + 7)
+        return table[n] % MOD_VAL
+        
         
