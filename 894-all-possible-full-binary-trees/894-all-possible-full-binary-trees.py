@@ -9,6 +9,10 @@ class Solution:
     
     
     def allPossibleFBT(self, n: int) -> List[Optional[TreeNode]]:
+        # Edge case: If n is even -> no possible full binary trees
+        if n % 2 == 0:
+            return []
+        
         memo = {}
         
         def helper(start, end):
