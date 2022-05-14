@@ -7,7 +7,8 @@
 class Solution:
     # Approach 1: Memoization
     
-    
+    # Time = O(Catalan Number), but the idx of the C_num will be less. If f(2K+1) denotes the number of full bin. trees, f(2K+1) = O(C_k)
+    # Space = O(Catalan Number)
     def allPossibleFBT(self, n: int) -> List[Optional[TreeNode]]:
         # Edge case: If n is even -> no possible full binary trees
         if n % 2 == 0:
