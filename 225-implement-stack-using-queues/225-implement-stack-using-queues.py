@@ -1,6 +1,6 @@
 from collections import *
 
-# Time = O(1) ~ amortized time
+# Time = O(N) ~ cannot overcome this barrier
 # Space = O(1) ~ for each insertion
 class MyStack:
     def __init__(self):
