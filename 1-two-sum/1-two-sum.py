@@ -1,18 +1,16 @@
+from collections import *
+
 class Solution:
-    
     # Time = O(N)
     # Space = O(N)
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        N = len(nums)
         prev_seen = defaultdict(int)
         
-        res = [-1, -1]
+        N = len(nums)
+        for i in range(N):
+            if target - nums[i] in prev_seen:
+                return [prev_seen[target-nums[i]], i]
+            
+            prev_seen[nums[i]] = i
         
-        for idx, num in enumerate(nums):
-            if (target - num) in prev_seen:
-                res = [prev_seen[target-num], idx]
-                break
-            else:
-                prev_seen[num] = idx
-        
-        return res
+        return [-1, -1]
