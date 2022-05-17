@@ -1,9 +1,11 @@
+from collections import *
+
 # Time = O(1) ~ amortized time
 # Space = O(1) ~ amortized space
 class MyQueue:
     def __init__(self):
-        self.enqueue_stack = []
-        self.dequeue_stack = []
+        self.enqueue_stack = deque()
+        self.dequeue_stack = deque()
         self.size = 0
 
     def push(self, x: int) -> None:
