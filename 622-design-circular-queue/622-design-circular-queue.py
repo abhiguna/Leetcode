@@ -1,5 +1,7 @@
-class MyCircularQueue:
 
+class MyCircularQueue:
+    # Time = O(1) amortized time for enqueue and dequeue
+    # Space = O(N), N: the final capacity of the queue
     def __init__(self, k: int):
         # Initialize an empty array of size k
         self.array = [-1] * k
@@ -8,7 +10,8 @@ class MyCircularQueue:
         self.head = -1
         self.tail = -1
         
-        
+    # Resize the queue when the queue becomes full
+    
     def enQueue(self, value: int) -> bool:
         # Queue is empty
         if self.size == 0:
