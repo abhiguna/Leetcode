@@ -1,27 +1,36 @@
-from collections import deque
+from collections import *
 
+# Time = O(1) 
+# Space = O(1)
 class MinStack:
 
     def __init__(self):
-        self.stack = deque()
-        self.min_list = [float('inf')]
+        self.my_stack = deque()
+        self.size = 0
+        self.min_stack = deque()
 
     def push(self, val: int) -> None:
-        self.stack.append(val)
-        if val <= self.min_list[-1]:
-            self.min_list.append(val)
-        
+        # If the stack is empty, push the current value into the min_stack
+        if self.size == 0:
+            self.min_stack.append(val)
+        else:
+        # Otherwise, append the minimum of the current value and the minimum seen thus far
+            self.min_stack.append(min(val, self.min_stack[-1]))
+        self.my_stack.append(val)
+        self.size += 1
+        return
+            
     def pop(self) -> None:
-        deleted_val = self.stack.pop()
-        if deleted_val == self.min_list[-1]:
-            self.min_list.pop()
+        self.min_stack.pop()
+        self.my_stack.pop()
+        self.size -= 1
+        return
 
     def top(self) -> int:
-        return self.stack[-1]
-        
+        return self.my_stack[-1]
+
     def getMin(self) -> int:
-        return self.min_list[-1]
-        
+        return self.min_stack[-1]
         
 
 
