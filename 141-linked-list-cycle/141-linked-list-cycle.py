@@ -5,16 +5,20 @@
 #         self.next = None
 
 class Solution:
-    # Time = O(n)
+    # Time = O(N)
     # Space = O(1)
     def hasCycle(self, head: Optional[ListNode]) -> bool:
-        if not head:
-            return False
-        runner_a = head
-        runner_b = head.next 
-        while runner_a and runner_b and runner_b.next:
-            if runner_a == runner_b:
+        # Edge case: the list is empty
+        if not head: return False
+        
+        hare, tortoise = head, head
+        # While the hare can move two steps forward
+        while hare.next and hare.next.next:
+            hare = hare.next.next
+            tortoise = tortoise.next 
+            # Check if they meet at some point
+            while hare == tortoise:
                 return True
-            runner_a = runner_a.next
-            runner_b = runner_b.next.next 
+        
+        # Reached the end of the linked list
         return False
