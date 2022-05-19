@@ -4,16 +4,31 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # Time = O(n)
+    # Approach 1: Bottom Up DFS
+    
+    # Time = O(N)
     # Space = O(1)
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # Edge case: empty list
         if not head:
             return None
-        prev_node = None
-        curr_node = head
-        while curr_node:
-            next_node = curr_node.next
-            curr_node.next = prev_node
-            prev_node = curr_node
-            curr_node = next_node
-        return prev_node
+        
+        global_head = [None]
+        
+        def helper(h):
+            # Base case: leaf node
+            if not h.next:
+                global_head[0] = h
+                return h
+            
+            # Recursive case
+            succ = helper(h.next)
+            succ.next = h
+            h.next = None
+            return h
+        
+        helper(head)
+        return global_head[0]
+            
+        
+        
