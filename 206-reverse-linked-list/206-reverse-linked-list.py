@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # Approach 1: Bottom Up DFS
+    # Approach: Top-down DFS
     
     # Time = O(N)
     # Space = O(1)
@@ -15,20 +15,17 @@ class Solution:
         
         global_head = [None]
         
-        def helper(h):
+        def helper(curr, pred):
             # Base case: leaf node
-            if not h.next:
-                global_head[0] = h
-                return h
+            if not curr.next:
+                curr.next = pred
+                global_head[0] = curr
+                return
             
-            # Recursive case
-            succ = helper(h.next)
-            succ.next = h
-            h.next = None
-            return h
+            succ = curr.next 
+            curr.next = pred
+            helper(succ, curr)
+            return
         
-        helper(head)
+        helper(head, None)
         return global_head[0]
-            
-        
-        
