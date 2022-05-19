@@ -4,41 +4,51 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-
+    # Time = O(N)
+    # Space = O(1)
     def reorderList(self, head: Optional[ListNode]) -> None:
         """
         Do not return anything, modify head in-place instead.
         """
-        if not head:
+        # Edge case: empty list or singleton list
+        if not head or not head.next:
             return
         
         # Find the middle node
-        slow = head
-        fast = head
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next
+        hare, tortoise = head, head
+        while hare.next and hare.next.next:
+            hare = hare.next.next
+            tortoise = tortoise.next 
         
-        # Reverse the second part of the list
-        prev_node = None
-        curr_node = slow
-        while curr_node:
-            next_node = curr_node.next
-            curr_node.next = prev_node
-            prev_node = curr_node
-            curr_node = next_node
+        # Reverse the right half
+        curr = tortoise.next 
+        tortoise.next = None
+        pred = None
+        while curr:
+            succ = curr.next 
+            curr.next = pred
+            pred = curr
+            curr = succ
         
-        # Merge the two sorted lists
-        first = head
-        second = prev_node
-        while second.next:
-            temp_node = first.next
-            first.next = second
-            first = temp_node
+        sentinel = ListNode(-math.inf, None)
+        tail = sentinel
+        l1, l2 = head, pred
+        while l1 and l2:
+            # Append l1
+            tail.next = l1
+            tail = tail.next 
+            l1 = l1.next
+            tail.next = None
             
-            temp_node = second.next
-            second.next = first
-            second = temp_node
-            
+            # Append l2
+            tail.next = l2
+            tail = tail.next 
+            l2 = l2.next 
+            tail.next = None
+
+        # If list has odd num of elements, there will be 1 extra element in the left half
+        tail.next = l1
+        head = sentinel.next 
+        return
         
-            
+        
