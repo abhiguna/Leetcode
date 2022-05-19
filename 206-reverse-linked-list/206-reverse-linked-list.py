@@ -4,28 +4,22 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # Approach: Top-down DFS
+    # Approach: iterative version
     
     # Time = O(N)
-    # Space = O(N)
+    # Space = O(1)
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        # Edge case: empty list
-        if not head:
-            return None
+        # Edge case: empty or singleton list
+        if not head or not head.next:
+            return head
         
-        global_head = [None]
-        
-        def helper(curr, pred):
-            # Base case: leaf node
-            if not curr.next:
-                curr.next = pred
-                global_head[0] = curr
-                return
-            
+        curr = head
+        pred = None
+        while curr:
             succ = curr.next 
             curr.next = pred
-            helper(succ, curr)
-            return
-        
-        helper(head, None)
-        return global_head[0]
+            pred = curr
+            curr = succ
+            
+        # The pred ptr points to the head of the reversed list
+        return pred
