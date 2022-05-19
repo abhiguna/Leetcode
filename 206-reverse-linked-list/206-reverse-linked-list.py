@@ -7,7 +7,7 @@ class Solution:
     # Approach: Top-down DFS
     
     # Time = O(N)
-    # Space = O(1)
+    # Space = O(N)
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
         # Edge case: empty list
         if not head:
