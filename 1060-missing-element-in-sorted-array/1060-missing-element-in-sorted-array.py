@@ -1,24 +1,24 @@
 class Solution:
+    # Time = O(logN)
+    # Space = O(1)
     def missingElement(self, nums: List[int], k: int) -> int:
-        if len(nums) == 1:
-            return nums[0] + k
-        
-        def missing(idx, nums):
-            return nums[idx] - (nums[0] + idx)
-        
         N = len(nums)
-        # Special case: k > missing(n-1, nums)
-        if missing(N - 1, nums) < k:
-            return nums[N-1] + (k-missing(N-1, nums))
-        
-        low = 0
-        high = N - 1
-        while low != high:
-            mid = (low+high) // 2 
-            if missing(mid, nums) < k:
-                low = mid + 1
+        start = 0
+        end = N - 1
+        # We have two zones: missing_left < k | missing_left >= k
+        # Goal: find the last value in the missing_left < k zone
+        while start <= end:
+            mid = start + (end - start) // 2
+            expected_val = nums[0] + mid
+            missing_left = nums[mid] - expected_val
+            
+            # In the left zone
+            if missing_left < k:
+                start = mid + 1
+            # In the right zone
             else:
-                high = mid
+                end = mid - 1
         
-        return nums[low-1] + (k-missing(low-1, nums))
-        
+        # The end ptr points to the left zone
+        missing_left = nums[end] - (nums[0] + end)
+        return nums[end] + (k - missing_left)
