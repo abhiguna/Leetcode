@@ -2,23 +2,24 @@ class Solution:
     # Time = O(N)
     # Space = O(1)
     def findDuplicate(self, nums: List[int]) -> int:
-        # The duplicate element will create a cycle
-        # We have to find the start of the cycle -> the idx where this occurs will be dup. ele.
-        def f(idx):
-            return nums[idx]
-    
-        hare, tortoise = 0, 0
-        while True:
-            hare = f(f(hare))
-            tortoise = f(tortoise)
-            # Cycle found
-            if hare == tortoise:
-                # Find the start of the cycle
-                third = 0
-                while third != tortoise:
-                    tortoise = f(tortoise)
-                    third = f(third)
-                
-                return third
+        N = len(nums)
         
+        # Cycle sort: 1, ..., N values in idxs 0,...., N
+        for i in range(N):
+            while nums[i] != i:
+                dest = nums[i]
+                # Sanity check
+                if nums[i] != nums[dest]:
+                    # Swap
+                    nums[i], nums[dest] = nums[dest], nums[i]
+                else:
+                    break
+        
+        # Find the duplicate
+        for i in range(N):
+            if nums[i] != i:
+                return nums[i]
+        
+        # Will not be reached since we know there is at least one duplicate
         return -1
+        
