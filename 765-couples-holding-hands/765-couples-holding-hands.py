@@ -10,10 +10,7 @@ class Solution:
         # Consider each sofa, keeping the left person in each sofa anchored and finding the corresponding
         #. right person based on the id of the left person in the current sofa
         num_swaps = 0
-        for sofa in range(N):
-            if 2*sofa >= N:
-                break
-    
+        for sofa in range(N//2):
             p_left = row[2*sofa]
             p_right = row[2*sofa + 1]
             p_right_expected = -1
