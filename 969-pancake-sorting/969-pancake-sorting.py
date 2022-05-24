@@ -8,10 +8,10 @@ class Solution:
         for i in range(N-1,-1,-1):
             if arr[i] != i+1:
                 # Find the idx of the i+1th pancake to flip it two times
-                for j in range(i, -1, -1):
+                for j in range(i-1, -1, -1):
                     if arr[j] == i+1:
                         break
-                # Flip at j twice
+                # Flip at j then Flip at i to bring pancake i+1 to position i
                 arr[:j+1] = arr[:j+1][::-1]
                 arr[:i+1] = arr[:i+1][::-1]
                 res.append(j+1)
