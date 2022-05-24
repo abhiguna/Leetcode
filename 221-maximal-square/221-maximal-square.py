@@ -1,6 +1,6 @@
 class Solution:
     # Time = O(M*N)
-    # Space = O(M*N)
+    # Space = O(M*N) -> could be brought down to O(M)
     def maximalSquare(self, matrix: List[List[str]]) -> int:
         # D&C Approach
         M = len(matrix)
