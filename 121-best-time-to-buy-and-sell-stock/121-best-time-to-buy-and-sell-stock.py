@@ -1,16 +1,14 @@
 class Solution:
-    # Time = O(N)
-    # Space = O(1)
     def maxProfit(self, prices: List[int]) -> int:
         N = len(prices)
-        if N == 0:
-            return 0
+        buy_price = prices[0]
         max_profit = 0
-        min_so_far = prices[0]
-        for i in range(N):
-            if prices[i] < min_so_far:
-                # Found a new min
-                min_so_far = prices[i]
-            if max_profit < prices[i] - min_so_far:
-                max_profit = prices[i] - min_so_far
+        
+        for i in range(1, N):
+            curr_profit = prices[i] - buy_price
+            if curr_profit < 0:
+                buy_price = prices[i]
+            else:
+                max_profit = max(max_profit, curr_profit)
+        
         return max_profit
