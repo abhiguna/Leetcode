@@ -2,13 +2,16 @@ class Solution:
     # Time = O(N)
     # Space = O(1)
     def maxSubArray(self, nums: List[int]) -> int:
-        # Kadane's algorithm
         N = len(nums)
-        curr_sum = nums[0]
-        max_sum = max(nums)
         
+        # Maintain the global maximum sum as well as the current maximum ending at the curr idx i
+        global_max = nums[0]
+        curr_max = nums[0]
         for i in range(1, N):
-            curr_sum = max(curr_sum + nums[i], nums[i])
-            max_sum = max(max_sum, curr_sum)
-            
-        return max_sum
+            # Update curr max as well as the global max
+            # curr max will either extend the curr max at the prev idx or will be equal to the value of 
+            #.  the current element
+            curr_max = max(curr_max + nums[i], nums[i])
+            global_max = max(global_max, curr_max)
+        
+        return global_max
