@@ -1,21 +1,19 @@
-
-# Pattern: circular-queue
 class MovingAverage:
-
+    # Time = O(1)
+    # Space = O(k), k: size
     def __init__(self, size: int):
-        self.size = size
-        self.head = 0
-        self.window_sum = 0
-        self.queue = [0] * self.size
-        self.count = 0
-        
+        self.queue = deque()
+        self.capacity = size
+        self.total = 0
+
     def next(self, val: int) -> float:
-        self.count += 1
-        self.tail = (self.head + 1) % self.size
-        self.window_sum = self.window_sum - self.queue[self.tail] + val
-        self.head = (self.head + 1) % self.size
-        self.queue[self.head] = val
-        return self.window_sum / min(self.count, self.size)
+        # Add the current val to the end of the queue
+        self.queue.append(val)
+        self.total += val
+        if len(self.queue) > self.capacity:
+            self.total -= self.queue.popleft()
+        return self.total / len(self.queue)
+        
 
 
 # Your MovingAverage object will be instantiated and called as such:
