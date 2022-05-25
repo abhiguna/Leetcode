@@ -1,18 +1,25 @@
-# Optimal
-from collections import defaultdict
-# Date: 2/7/22
-# 30m 3
 class Solution:
-    # Pattern: hashmap
-    # Time = O(n)
-    # Space = O(n)
+    # Time = O(N), N: len(nums)
+    # Space = O(N)
     def subarraySum(self, nums: List[int], k: int) -> int:
-        result = 0
-        curr_sum = 0
-        prefix_sums = {0:1}
-        for num in nums:
-            curr_sum += num
-            diff = curr_sum - k
-            result += prefix_sums.get(diff, 0)
-            prefix_sums[curr_sum] = 1 + prefix_sums.get(curr_sum, 0)
-        return result
+        # Initialize an empty hMap that stores the prefix and the count of the prefix
+        hmap = {}
+        
+        # Base case: there is one prefix
+        hmap[0] = 1
+        prefix_sum = 0
+        total = 0
+        
+        for n in nums:
+            prefix_sum += n
+            # Check if diff in hmap and update total # of subarrays accordingly
+            if prefix_sum - k in hmap:
+                total += hmap[prefix_sum - k]
+            
+            # Update hmap
+            if prefix_sum in hmap:
+                hmap[prefix_sum] += 1
+            else:
+                hmap[prefix_sum] = 1
+        
+        return total
