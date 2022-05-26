@@ -9,7 +9,7 @@ class Solution:
         N = len(fruits)
         left = 0
         max_len = 0
-        hmap = defaultdict(int) # Stores the distinct type of fruits
+        hmap = defaultdict(int) # Stores the distinct type of fruits, which will be at most 3
         
         for i in range(N):
             hmap[fruits[i]] += 1
