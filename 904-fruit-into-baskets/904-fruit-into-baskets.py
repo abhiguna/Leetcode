@@ -14,7 +14,7 @@ class Solution:
         for i in range(N):
             hmap[fruits[i]] += 1
             
-            while len(hmap) > 2:
+            while left <= i and len(hmap) > 2:
                 hmap[fruits[left]] -= 1
                 if hmap[fruits[left]] == 0:
                     del hmap[fruits[left]]
