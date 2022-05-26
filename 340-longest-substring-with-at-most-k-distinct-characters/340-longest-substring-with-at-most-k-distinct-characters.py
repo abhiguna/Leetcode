@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(N)  
+    # Space = O(k)
     def lengthOfLongestSubstringKDistinct(self, s: str, k: int) -> int:
         N = len(s)
         max_len = 0
