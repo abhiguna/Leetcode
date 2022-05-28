@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(M), M: # of bits => log(num)
+    # Space = O(1)
     def findComplement(self, num: int) -> int:
         # Find the first highest power of two > num
         num_bits = 0
