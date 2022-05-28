@@ -4,26 +4,15 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # Time = O(N), N: len(linkedlist)
+    # Time = O(N), N : length of linkedlist
     # Space = O(1)
     def getDecimalValue(self, head: ListNode) -> int:
-        total = 0
-        
-        def find_len(head):
-            count = 0
-            curr = head
-            while curr:
-                count += 1
-                curr = curr.next
-            return count
-            
-        N = find_len(head)
-        power = N - 1
+        val = 0
         curr = head
         
+        # Left shift instead of normal multipication
         while curr:
-            total += curr.val * (2**power)
-            power -= 1
+            val = (val << 1) + curr.val 
             curr = curr.next 
         
-        return total
+        return val
