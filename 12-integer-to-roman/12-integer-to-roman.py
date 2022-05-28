@@ -1,20 +1,21 @@
 class Solution:
-    # Pattern: hashmap
-    # Time: O(1)
-    # Space: O(1)
+    # Time = O(1)
+    # Space = O(1)
     def intToRoman(self, num: int) -> str:
-        rom_list = [
-                    ['I',1], ['IV',4], ['V',5], 
-                    ['IX',9], ['X',10], ['XL',40], 
-                    ['L',50], ['XC',90], ['C',100], 
-                    ['CD',400], ['D',500], ['CM',900], ['M',1000]
-                   ]
+        table = [
+                (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"), 
+                 (100, "C"), (90, "XC"), (50, "L"), (40, "XL"), 
+                 (10, "X"), (9, "IX"), (5, "V"), (4, "IV"), (1, "I")
+                ]
+        N = len(table)
+        res = []
         
-        rom_str = []
+        for i in range(N):
+            # Look at the ith pair & bite off that value as many times needed
+            # table[i][0] = value, table[i][1] = symbol
+            if num >= table[i][0]:
+                q = num // table[i][0]
+                res.append(table[i][1]*q)
+                num = num % table[i][0]
         
-        for rom, val in reversed(rom_list):
-            if num // val:
-                count = num // val
-                rom_str.append(rom * count)
-                num = num % val
-        return ''.join(rom_str)
+        return "".join(res)
