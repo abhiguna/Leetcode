@@ -1,18 +1,21 @@
-# Optimal
-
-# Date: 2/7/22
-# 30m 5
 class Solution:
-    # Pattern: BFS
-    # Time = O(n * 2^n)
-    # Space = O(n) + return array 
+    # Time = O(N*2^N)
+    # Space = O(N*2^N)
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        subsets = []
-        subsets.append([])
-        for num in nums:
-            K = len(subsets)
-            for i in range(K):
-                curr_sub = subsets[i][:]
-                curr_sub.append(num)
-                subsets.append(curr_sub)
-        return subsets
+        N = len(nums)
+        res = []
+        # Enumerate all bitstrings of length N
+        # 0 ... 2^N - 1
+        for s in range(0, (1<<N)):
+            p = N - 1
+            slate = deque()
+            while s != 0:
+                # Rightmost bit is set
+                if s & 1 == 1:
+                    slate.appendleft(nums[p])
+                p -= 1
+                s = s >> 1
+            res.append(slate)
+        
+        return res
+                    
