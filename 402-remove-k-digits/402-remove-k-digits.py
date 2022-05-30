@@ -1,28 +1,18 @@
-from collections import deque
-
-# Optimal
-# Time = O(n + k) | Space = O(n)
-
 class Solution:
-    # stack
-    # remove_mode
-    
     def removeKdigits(self, num: str, k: int) -> str:
-        stack = deque()
+        stack = []
         
-        if k >= len(num):
-            return "0"
-        
-        for n in num:
-            while stack and k > 0 and n < stack[-1]:
+        for d in num:
+            while k > 0 and stack and stack[-1] > d:
                 stack.pop()
                 k -= 1
-    
-            stack.append(n)
+            
+            stack.append(d)
         
-        while k > 0:
-            stack.pop()
-            k -= 1
+        # If input given in increasing order -> exclude the last k elements
+        if k > 0:
+            smallest_sum = stack[:-k]
+        else:
+            smallest_sum = stack
         
-        return "".join(stack).lstrip('0') or "0"
-        
+        return ("".join(smallest_sum)).lstrip("0") or "0"
