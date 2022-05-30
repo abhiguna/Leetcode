@@ -1,43 +1,38 @@
 class Solution:
-    # Time = O(N)
-    # Space = O(N)
     def maximumScore(self, nums: List[int], k: int) -> int:
         N = len(nums)
-        # Compute the left and right spans
-        stack = deque()
-        left_span = [0] * N
         
-        for i in range(N):
-            while stack and stack[-1][0] >= nums[i]:
-                stack.pop()
+        max_score = nums[k]
+        min_height = nums[k]
+        i = k - 1
+        j = k + 1
+        
+        while i >= 0 and j < N:
+            if nums[i] > nums[j]:
+                min_height = min(min_height, nums[i])
+                # Update the score using the rectangle from [i, j-1]
+                max_score = max(max_score, (j-i) * min_height)
+                i -= 1
+            else: 
+                min_height = min(min_height, nums[j])
+                # Update the score using the rectangle from [i+1, j]
+                max_score = max(max_score, (j-i) * min_height)
+                j += 1
+        
+        # Gather phase
+        while i >= 0:
+            min_height = min(min_height, nums[i])
+            max_score = max(max_score, (j-i) * min_height)
+            i -= 1
+        
+        while j < N:
+            min_height = min(min_height, nums[j])
+            # Update the score using the rectangle from [i+1, j]
+            max_score = max(max_score, (j-i) * min_height)
+            j += 1
+        
+        return max_score
+        
             
-            if stack:
-                left_span[i] = i - stack[-1][1]
-            else:
-                left_span[i] = i + 1
-            
-            stack.append((nums[i], i))
-        
-        stack = deque()
-        right_span = [0] * N
-        
-        for i in range(N-1, -1, -1):
-            while stack and stack[-1][0] >= nums[i]:
-                stack.pop()
-            
-            if stack:
-                right_span[i] = stack[-1][1] - i
-            else:
-                right_span[i] = N - i
-            
-            stack.append((nums[i], i))
-        
-        max_area = 0
-        for i in range(N):
-            curr_area = nums[i] * (left_span[i] + right_span[i] - 1)
-            if i-left_span[i] + 1 <= k <= i+right_span[i]-1:
-                max_area = max(max_area, curr_area)
-        
-        return max_area
                 
-            
+        
