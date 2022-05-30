@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(N)
+    # Space = O(N)
     def maximumScore(self, nums: List[int], k: int) -> int:
         N = len(nums)
         # Compute the left and right spans
