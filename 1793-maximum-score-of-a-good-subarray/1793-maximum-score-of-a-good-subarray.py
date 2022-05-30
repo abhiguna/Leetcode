@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(N)
+    # Space = O(1)
     def maximumScore(self, nums: List[int], k: int) -> int:
         N = len(nums)
         
