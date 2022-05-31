@@ -2,23 +2,20 @@ class Solution:
     # Time = O(N)
     # Space = O(1)
     def sortColors(self, nums: List[int]) -> None:
-        N = len(nums)
-        red = 0
-        blue = N - 1
-        read = 0
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        left, read, right = 0, 0, len(nums) - 1
         
-        while read <= blue:
-            if nums[read] == 0:
-                # Swap with red
-                nums[red], nums[read] = nums[read], nums[red]
-                red += 1
+        while read <= right:
+            if nums[read] == 1:
                 read += 1
-            elif nums[read] == 1:
+            elif nums[read] == 0:
+                (nums[left], nums[read]) = (nums[read], nums[left])
+                left += 1
                 read += 1
             else:
-                # Swap with blue
-                nums[blue], nums[read] = nums[read], nums[blue]
-                blue -= 1
+                (nums[right], nums[read]) = (nums[read], nums[right])
+                right -= 1
         
         return nums
-        
