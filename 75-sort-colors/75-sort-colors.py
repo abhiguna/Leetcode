@@ -5,17 +5,24 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        left, read, right = 0, 0, len(nums) - 1
+        N = len(nums)
+        red, white, blue = 0, 0, N-1
         
-        while read <= right:
-            if nums[read] == 1:
-                read += 1
-            elif nums[read] == 0:
-                (nums[left], nums[read]) = (nums[read], nums[left])
-                left += 1
-                read += 1
+        while white <= blue:
+            if nums[white] == 0:
+                # Swap with red
+                (nums[red], nums[white]) = (nums[white], nums[red])
+                red += 1
+                white += 1
+            elif nums[white] == 2:
+                # Swap with blue
+                (nums[blue], nums[white]) = (nums[white], nums[blue])
+                blue -= 1
+                # DON'T increment the white ptr
             else:
-                (nums[right], nums[read]) = (nums[read], nums[right])
-                right -= 1
+                white += 1
         
         return nums
+        
+        
+        
