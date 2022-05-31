@@ -1,27 +1,29 @@
 from heapq import *
 
-# Time = O(logk)
+# Time = O(logk), for the nth number
 # Space = O(k)
 class KthLargest:
-
     def __init__(self, k: int, nums: List[int]):
-        self.k = k
         self.min_heap = []
+        self.size = 0
+        self.capacity = k
         
         for num in nums:
             heappush(self.min_heap, num)
-                
-            if len(self.min_heap) > self.k:
+            self.size += 1
+            if self.size > self.capacity:
                 heappop(self.min_heap)
-        
+                self.size -= 1
+            
 
     def add(self, val: int) -> int:
         heappush(self.min_heap, val)
-                
-        if len(self.min_heap) > self.k:
+        self.size += 1
+        if self.size > self.capacity:
             heappop(self.min_heap)
-        
+            self.size -= 1
         return self.min_heap[0]
+        
         
 
 
