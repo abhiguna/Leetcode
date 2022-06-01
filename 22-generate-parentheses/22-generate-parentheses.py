@@ -1,31 +1,32 @@
 class Solution:
-    def helper(self, n, idx, num_opening, num_closing, partial_solution, res):
-            # Base case
-            if idx == 2*n:
-                res.append("".join(partial_solution[:]))
-                return
-            
-            # Recursive case
-            # 1. Opening paran
-            if num_opening < n:
-                partial_solution.append("(")
-                self.helper(n, idx + 1, num_opening + 1, num_closing, partial_solution, res)
-                partial_solution.pop()
-            
-            # 2. Closing paran
-            if num_closing < num_opening:
-                partial_solution.append(")")
-                self.helper(n, idx + 1, num_opening, num_closing + 1, partial_solution, res)
-                partial_solution.pop()
-            
-            return
-    
-    # Time = O(N*2^N)
+    # Time = O(Catalan Number)
     # Space = O(N)
     def generateParenthesis(self, n: int) -> List[str]:
         res = []
-        self.helper(n, 0, 0, 0, [], res)
+        
+        def helper(num_open, num_close, slate):
+            # Backtracking case
+            if num_close > num_open:
+                return
+            # Base case
+            elif num_open + num_close == 2*n:
+                res.append("".join(slate[:]))
+                return
+            else:
+                # Add an open paran if possible
+                if num_open < n:
+                    slate.append('(')
+                    helper(num_open+1, num_close, slate)
+                    slate.pop()
+                
+                # Add an close paran if possible
+                if num_close < n:
+                    slate.append(')')
+                    helper(num_open, num_close+1, slate)
+                    slate.pop()
+            return
+                
+        # Root Manager
+        helper(0, 0, [])
         return res
-        
-        
         
