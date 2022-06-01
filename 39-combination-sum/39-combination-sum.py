@@ -23,8 +23,9 @@ class Solution:
             # Include
             count = target_left // candidates[idx]
             for i in range(1, count+1):
-                slate += [candidates[idx]] * i
-                target_left -= (candidates[idx]) * i
+                for j in range(i):
+                    slate.append(candidates[idx])
+                    target_left -= candidates[idx]
                 helper(idx+1, target_left, slate)
                 for j in range(i):
                     slate.pop()
