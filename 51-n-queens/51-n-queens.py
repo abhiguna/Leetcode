@@ -1,49 +1,44 @@
 class Solution:
-    # Time = Exponential
-    # Space = Exponential
+    # Time = O(N!)
+    # Space = O(N^2)
     def solveNQueens(self, n: int) -> List[List[str]]:
+        board = [["." for j in range(n)] for i in range(n)]
         res = []
-        solution = [None] * n
-        final_solution = []
         
-        # Dp arrays 
-        dp_col = [False] * n
-        dp_slash = [False] * (2*n - 1)
-        dp_backslash = [False] * (2*n - 1)
-        
-        def can_place(row, col):
-            return not (dp_col[col] or dp_slash[row + col] or dp_backslash[(row-col) + n - 1])
+        def fill_queens():
+            sol = []
+            for row in range(n):
+                sol.append("".join(board[row]))
+            return sol
             
-        def dfs(curr_row, queens_left, slate):
-            # Base case
-            if curr_row == n:
-                if queens_left == 0:
-                    res.append(list(slate))
+        
+        def helper(row, forward_slash, backslash, cols):
+            # Base case: placed all the N queens
+            if row == n:
+                res.append(fill_queens())
                 return
             
-            for curr_col in range(n):
-                if can_place(curr_row, curr_col):
-                    slate[curr_row] = curr_col
-                    dp_col[curr_col] = True
-                    dp_slash[curr_row + curr_col] = True
-                    dp_backslash[(curr_row-curr_col) + (n-1)] = True
-                    
-                    dfs(curr_row + 1, queens_left - 1, slate)
-                    
-                    dp_col[curr_col] = False
-                    dp_slash[curr_row + curr_col] = False
-                    dp_backslash[(curr_row-curr_col) + (n-1)] = False
-            
+            # Recursive case
+            for col in range(n):
+                curr_fslash = row+col
+                curr_bslash = row-col
+                if (col in cols) or (curr_fslash in forward_slash) or (curr_bslash in backslash):
+                    # We cannot place the queen in the current col
+                    continue
+                
+                cols.add(col)
+                forward_slash.add(curr_fslash)
+                backslash.add(curr_bslash)
+                board[row][col] = "Q"
+                
+                helper(row+1, forward_slash, backslash, cols)
+                
+                cols.remove(col)
+                forward_slash.remove(curr_fslash)
+                backslash.remove(curr_bslash)
+                board[row][col] = "."
+                
             return
-        
-        def generate_board():
-            for sol in res:
-                board = [["." for j in range(n)] for i in range(n)]
-                for row, col in enumerate(sol):
-                    board[row][col] = "Q"
-                final_solution.append(["".join(row) for row in board])
-        
-        dfs(0, n, solution)
-        generate_board()
-        return final_solution
-                    
+    
+        helper(0, set(), set(), set())
+        return res                
