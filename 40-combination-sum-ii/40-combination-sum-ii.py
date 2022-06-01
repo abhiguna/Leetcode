@@ -23,10 +23,8 @@ class Solution:
                 
                 # Include the current element
                 slate.append(candidates[idx])
-                target_left -= candidates[idx]
-                helper(idx+1, target_left, slate)
+                helper(idx+1, target_left - candidates[idx], slate)
                 slate.pop()
-                target_left += candidates[idx]
                 return
         
         # Root manager
