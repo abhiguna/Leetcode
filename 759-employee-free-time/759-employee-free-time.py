@@ -5,41 +5,33 @@ class Interval:
         self.start = start
         self.end = end
 """
-from heapq import *
-import math
 
 class Solution:
-    # Time = O(NlogK), N = Total # of intervals
+    # Time = O(Nlogk), N: # of total intervals, k: # of employees
     # Space = O(N)
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
-        K = len(schedule)
+        res = [(-math.inf, -math.inf)]
         min_heap = []
-        result = [Interval(-math.inf, -math.inf)]
+        k = len(schedule)
+        for eidx in range(k):
+            if len(schedule[eidx]) > 0:
+                heappush(min_heap, (schedule[eidx][0].start, eidx, 0))
         
-        # Insert first interval of each employee
-        for i in range(K):
-            if schedule[i]:
-                heappush(min_heap, (schedule[i][0].start, i, 0))
-        
-        # Build result array
         while min_heap:
-            curr_start, emp_idx, int_idx = heappop(min_heap)
-            if curr_start >= result[-1].end:
-                result.append(schedule[emp_idx][int_idx])
+            (start, eidx, pos) = heappop(min_heap)
+            # No overlap
+            if res[-1][1] < start:
+                res.append((start, schedule[eidx][pos].end))
             else:
-                # Overlap
-                result[-1] = Interval(result[-1].start, max(result[-1].end, schedule[emp_idx][int_idx].end))    
+                res[-1] = (res[-1][0], max(res[-1][1], schedule[eidx][pos].end))
             
-            int_idx += 1
-            if int_idx < len(schedule[emp_idx]):
-                heappush(min_heap, (schedule[emp_idx][int_idx].start, emp_idx, int_idx))
-            
-        # Get the freetimes
+            if pos + 1 < len(schedule[eidx]):
+                heappush(min_heap, (schedule[eidx][pos+1].start, eidx, pos+1))
+        
+        # The list res now contains all the disjoint interval list of employees busy times
         free_times = []
-        for i in range(1, len(result) - 1):
-            # Free time exists
-            if result[i].end < result[i+1].start:
-                free_times.append(Interval(result[i].end, result[i+1].start))
+        for i in range(1, len(res)-1):
+            free_times.append(Interval(res[i][1], res[i+1][0]))
         
         return free_times
-                
+        
