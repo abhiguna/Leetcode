@@ -1,21 +1,26 @@
 class Solution:
     # Time = O(N*2^N)
-    # Space = O(N*2^N)
+    # Space = O(N)
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        N = len(nums)
+        # Subsets can be reduced to the combinations problem
         res = []
-        # Enumerate all bitstrings of length N
-        # 0 ... 2^N - 1
-        for s in range(0, (1<<N)):
-            p = N - 1
-            slate = deque()
-            while s != 0:
-                # Rightmost bit is set
-                if s & 1 == 1:
-                    slate.appendleft(nums[p])
-                p -= 1
-                s = s >> 1
-            res.append(slate)
+        N = len(nums)
         
+        def helper(idx, slate):
+            # Base case
+            if idx == N:
+                res.append(slate[:])
+            else:
+                # Exclude the current element
+                helper(idx+1, slate)
+                
+                # Include the current element
+                slate.append(nums[idx])
+                helper(idx+1, slate)
+                slate.pop()
+            
+            return
+        
+        # Root manager
+        helper(0, [])
         return res
-                    
