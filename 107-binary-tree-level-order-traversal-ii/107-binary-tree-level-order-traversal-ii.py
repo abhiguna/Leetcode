@@ -8,29 +8,26 @@ class Solution:
     # Time = O(N)
     # Space = O(N)
     def levelOrderBottom(self, root: Optional[TreeNode]) -> List[List[int]]:
+        # Edge case: empty tree
         if not root:
             return []
         
         res = deque()
         queue = deque([root])
-        
         while queue:
             num_nodes = len(queue)
             curr_level = []
             
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
+                node = queue.popleft()
+                curr_level.append(node.val)
                 
-                curr_level.append(curr_node.val)
+                if node.left:
+                    queue.append(node.left)
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
-                
-                if curr_node.right:
-                    queue.append(curr_node.right)
-                
+                if node.right:
+                    queue.append(node.right)
             
             res.appendleft(curr_level)
         
         return res
-            
