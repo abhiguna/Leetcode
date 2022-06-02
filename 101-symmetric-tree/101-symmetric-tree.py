@@ -4,33 +4,37 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        # Edge case: empty tree
+        if not root:
+            return True
         
         queue = deque([(root, root)])
         
         while queue:
             num_nodes = len(queue)
             
-            for i in range(num_nodes):
-                node_l, node_r = queue.popleft()
+            for _ in range(num_nodes):
+                (nodeL, nodeR) = queue.popleft()
                 
-                if node_l.val != node_r.val:
+                # Check if values are different
+                if nodeL.val != nodeR.val:
                     return False
                 
-                if node_l.left and node_r.right:
-                    queue.append((node_l.left, node_r.right))
-                elif node_l.left or node_r.right:
+                # Compare left child of left node and right node of right child
+                if nodeL.left and nodeR.right:
+                    queue.append((nodeL.left, nodeR.right))
+                if (nodeL.left and not nodeR.right) or (not nodeL.left and nodeR.right):
                     return False
                 
-                if node_l.right and node_r.left:
-                    queue.append((node_l.right, node_r.left))
-                elif node_l.right or node_r.left:
+                # Compare right child of left node and left node of right child
+                if nodeL.right and nodeR.left:
+                    queue.append((nodeL.right, nodeR.left))
+                if (nodeL.right and not nodeR.left) or (not nodeL.right and nodeR.left):
                     return False
         
         return True
+                    
