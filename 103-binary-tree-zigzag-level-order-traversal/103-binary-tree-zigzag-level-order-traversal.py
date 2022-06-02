@@ -14,7 +14,7 @@ class Solution:
         
         res = []
         queue = deque([root])
-        l_to_r = True
+        level_num = 0
         
         while queue:
             num_nodes = len(queue)
@@ -22,7 +22,7 @@ class Solution:
             
             for _ in range(num_nodes):
                 node = queue.popleft()
-                if l_to_r:
+                if level_num % 2 == 0:
                     curr_level.append(node.val)
                 else:
                     curr_level.appendleft(node.val)
@@ -33,7 +33,7 @@ class Solution:
                 if node.right:
                     queue.append(node.right)
             
-            l_to_r = not l_to_r
+            level_num += 1
             res.append(list(curr_level))
         
         return res
