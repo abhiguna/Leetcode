@@ -4,28 +4,28 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
-
 class Solution:
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        
+        # BFS
         queue = deque([root])
+        leftmost_val = root.val
+        
         while queue:
             num_nodes = len(queue)
-            first_value = None
             
             for i in range(num_nodes):
-                curr_node = queue.popleft()
-                if first_value is None:
-                    first_value = curr_node.val
+                node = queue.popleft()
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
+                if i == 0:
+                    leftmost_val = node.val 
                 
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.left:
+                    queue.append(node.left)
+                
+                if node.right:
+                    queue.append(node.right)
             
-        
-        return first_value
+        return leftmost_val
