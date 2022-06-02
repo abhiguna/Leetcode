@@ -8,23 +8,27 @@ class Solution:
     # Time = O(N)
     # Space = O(N)
     def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        # Edge case: empty tree
+        if not root:
+            return []
+        
         res = []
         queue = deque([root])
-        
         while queue:
             num_nodes = len(queue)
-            level_sum = 0.0
+            total_sum = 0
             
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
-                level_sum += curr_node.val
+                node = queue.popleft()
+                total_sum += node.val
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
+                if node.left:
+                    queue.append(node.left)
                 
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.right:
+                    queue.append(node.right)
                 
-            res.append(level_sum / num_nodes)
+            res.append(total_sum / num_nodes)
         
         return res
+            
