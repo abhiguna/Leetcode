@@ -29,7 +29,6 @@ class Solution:
                     prev_left = node.left
                     node.left = TreeNode(val)
                     node.left.left = prev_left
-                    
                     prev_right = node.right
                     node.right = TreeNode(val)
                     node.right.right = prev_right
