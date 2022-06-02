@@ -5,30 +5,30 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        # Edge case: empty tree
         if not root:
             return None
         
         def dfs(node):
             # Base case: leaf node
             if not node.left and not node.right:
-                pass
+                return
             
-            # Recursive case: internal node
-            # Swap left and right child
-            node.left, node.right = node.right, node.left
+            prev_left = node.left 
+            prev_right = node.right
+            node.left = prev_right
+            node.right = prev_left
             
             if node.left:
                 dfs(node.left)
             
             if node.right:
                 dfs(node.right)
-                
+            
             return
-        
+            
         dfs(root)
         return root
-            
-            
