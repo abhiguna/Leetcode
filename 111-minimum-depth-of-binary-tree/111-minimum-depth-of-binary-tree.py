@@ -4,34 +4,35 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-from collections import deque
-
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def minDepth(self, root: Optional[TreeNode]) -> int:
+        # Edge case: empty tree
         if not root:
             return 0
         
-        curr_depth = 0
         queue = deque([root])
+        level_num = 1
         
         while queue:
             num_nodes = len(queue)
             
-            curr_depth += 1
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
+                node = queue.popleft()
                 
-                # Check for a leaf
-                if not curr_node.left and not curr_node.right:
-                    return curr_depth
+                # Check if min depth is reached -> leaf node
+                if not node.left and not node.right:
+                    return level_num
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
+                if node.left:
+                    queue.append(node.left)
                 
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.right:
+                    queue.append(node.right)
             
-        return curr_depth
+            level_num += 1
+
+    
+        return level_num
+                
