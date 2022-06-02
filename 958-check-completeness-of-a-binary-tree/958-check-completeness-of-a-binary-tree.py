@@ -4,37 +4,31 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
-
 class Solution:
-    
-    # Time = O(N)
-    # Space = O(N)
     def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
-        # Edge case
-        if not root.left and not root.right:
-            return True
+        # Edge case: empty tree
+        if not root:
+            return 0
         
+        expected_id = 1 # Expected id of a node in a complete binary tree (i.e. a bin heap represented as an array)
         queue = deque([(root, 1)])
-        prev_idx = None
         
         while queue:
             num_nodes = len(queue)
             
             for _ in range(num_nodes):
-                curr_node, curr_idx = queue.popleft()
+                (node, id) = queue.popleft()
                 
-                if prev_idx and curr_idx > prev_idx + 1:
+                if id == expected_id:
+                    expected_id += 1
+                else:
                     return False
                 
-                prev_idx = curr_idx
+                if node.left:
+                    queue.append((node.left, 2*id))
                 
-                if curr_node.left:
-                    queue.append((curr_node.left, 2*curr_idx))
-                
-                if curr_node.right:
-                    queue.append((curr_node.right, 2*curr_idx + 1))
+                if node.right:
+                    queue.append((node.right, 2*id + 1))
         
         return True
         
