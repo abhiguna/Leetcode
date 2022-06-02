@@ -4,47 +4,45 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
-
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def addOneRow(self, root: Optional[TreeNode], val: int, depth: int) -> Optional[TreeNode]:
-        # Edge case
+        # Edge case: given depth is 1
         if depth == 1:
-            old_root = root
-            new_root = TreeNode(val)
-            new_root.left = old_root
-            return new_root
+            new_node = TreeNode(val)
+            new_node.left = root
+            root = new_node
+            return root
         
+        # General case
         queue = deque([root])
-        curr_depth = 0
+        curr_depth = 1
         
         while queue:
             num_nodes = len(queue)
-            curr_depth += 1
             
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
-
+                node = queue.popleft()
+                
                 if curr_depth == depth - 1:
-                    old_left = curr_node.left
-                    old_right = curr_node.right
-
-                    curr_node.left = TreeNode(val)
-                    curr_node.left.left = old_left
-                    curr_node.right = TreeNode(val)
-                    curr_node.right.right = old_right
+                    prev_left = node.left
+                    node.left = TreeNode(val)
+                    node.left.left = prev_left
+                    
+                    prev_right = node.right
+                    node.right = TreeNode(val)
+                    node.right.right = prev_right
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
+                if node.left:
+                    queue.append(node.left)
                 
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.right:
+                    queue.append(node.right)
+                    
+            curr_depth += 1
+            
+            if curr_depth >= depth:
+                    break
         
         return root
-            
-            
-        
