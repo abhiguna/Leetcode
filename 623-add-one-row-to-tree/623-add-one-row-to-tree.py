@@ -41,8 +41,5 @@ class Solution:
                     queue.append(node.right)
                     
             curr_depth += 1
-            
-            if curr_depth >= depth:
-                    break
         
         return root
