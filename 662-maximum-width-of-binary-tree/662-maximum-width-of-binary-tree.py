@@ -4,39 +4,38 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
-
-
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        max_width = 0
+        # Edge case: empty tree
+        if not root:
+            return 0
+        
         queue = deque([(root, 1)])
+        max_width = 0
         
         while queue:
             num_nodes = len(queue)
-            start_idx = None
-            end_idx = None
+            first = None
+            last = None
             
             for _ in range(num_nodes):
-                node, idx = queue.popleft()
-                
-                if not start_idx:
-                    start_idx = idx
-                
-                end_idx = idx
-                
+                (node, id) = queue.popleft()
                 
                 if node.left:
-                    queue.append((node.left, 2*idx))
+                    queue.append((node.left, 2*id)) # If tree was complete this would be its id
                 
                 if node.right:
-                    queue.append((node.right, 2*idx + 1))
+                    queue.append((node.right, 2*id + 1))
+                
+                last = id
+                
+                if not first:
+                    first = id
             
-            if end_idx and start_idx:
-                max_width = max(max_width, end_idx - start_idx + 1)
+            max_width = max(max_width, last-first+1)
         
         return max_width
+                    
+            
