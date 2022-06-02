@@ -4,13 +4,11 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-from collections import deque
-
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
+        # Edge case: empty tree
         if not root:
             return []
         
@@ -21,17 +19,16 @@ class Solution:
             num_nodes = len(queue)
             
             for i in range(num_nodes):
-                curr_node = queue.popleft() 
+                node = queue.popleft()
                 
-                # Last node of curr level
+                # Found the rightmost element in the current level
                 if i == num_nodes - 1:
-                    res.append(curr_node.val)
+                    res.append(node.val)
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
+                if node.left:
+                    queue.append(node.left)
                 
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.right:
+                    queue.append(node.right)
             
         return res
-                    
