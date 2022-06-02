@@ -8,14 +8,11 @@ class Node:
         self.next = next
 """
 
-from collections import *
-
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
-        # Edge case
+        # Edge case: empty tree
         if not root:
             return None
         
@@ -23,21 +20,19 @@ class Solution:
         
         while queue:
             num_nodes = len(queue)
-            prev_node = None
             
             for i in range(num_nodes):
-                curr_node = queue.popleft()
+                node = queue.popleft()
                 
-                if prev_node:
-                    prev_node.next = curr_node
+                # Check if node is not the last node
+                if i < num_nodes - 1:
+                    node.next = queue[0]
                 
-                prev_node = curr_node
+                if node.left:
+                    queue.append(node.left)
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
-                
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.right:
+                    queue.append(node.right)
         
         return root
         
