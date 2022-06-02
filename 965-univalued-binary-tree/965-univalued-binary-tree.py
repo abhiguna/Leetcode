@@ -4,29 +4,30 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-from collections import deque
-
 class Solution:
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
-        target_val = root.val
+        # Edge case: empty tree
+        if not root:
+            return True
+        
+        value = root.val 
         queue = deque([root])
         
         while queue:
             num_nodes = len(queue)
             
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
+                node = queue.popleft()
                 
-                if curr_node.val != target_val:
+                if node.val != value:
                     return False
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
-                    
-                if curr_node.right:
-                    queue.append(curr_node.right)
-        
+                if node.left:
+                    queue.append(node.left)
+                
+                if node.right:
+                    queue.append(node.right)
+            
         return True
