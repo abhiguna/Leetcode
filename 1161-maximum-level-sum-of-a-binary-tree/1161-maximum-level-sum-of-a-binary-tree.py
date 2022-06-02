@@ -4,38 +4,37 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-from collections import deque
-import math
-
 class Solution:
-    
-    # Time = O(N)
+    # Time = O(N), N: # of nodes in the tree
     # Space = O(N)
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
-        max_sum = -math.inf
-        min_level = 0
+        # Edge case: empty tree
+        if not root:
+            return 0
         
-        curr_level = 0
+        max_level_sum = -math.inf 
+        min_level = 1
+        curr_level = 1
+        
         queue = deque([root])
-        
         while queue:
             num_nodes = len(queue)
-            level_sum = 0
-            
-            curr_level += 1
+            total_sum = 0
             
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
-                level_sum += curr_node.val
+                node = queue.popleft()
+                total_sum += node.val 
                 
-                if curr_node.left:
-                    queue.append(curr_node.left)
+                if node.left:
+                    queue.append(node.left) 
                 
-                if curr_node.right:
-                    queue.append(curr_node.right)
+                if node.right:
+                    queue.append(node.right)
             
-            if level_sum > max_sum:
-                max_sum = level_sum
+            if total_sum > max_level_sum:
+                max_level_sum = total_sum
                 min_level = curr_level
+            
+            curr_level += 1
         
         return min_level
