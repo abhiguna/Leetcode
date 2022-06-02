@@ -5,27 +5,34 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N), N: # of nodes in the tree
+    # Time = O(N), N: # nodes in the tree
     # Space = O(N)
     def findBottomLeftValue(self, root: Optional[TreeNode]) -> int:
+        # Top-down DFS
+        leftmost_val = [root.val]
+        max_depth = [0]
         
-        # BFS
-        queue = deque([root])
-        leftmost_val = root.val
+        def dfs(node, depth):
+            # Base case: leaf node
+            if not node.left and not node.right:
+                if depth > max_depth[0]:
+                    leftmost_val[0] = node.val 
+                    max_depth[0] = max(max_depth[0], depth)
+                return
+            
+            # Recursive case: internal node
+            if node.left:
+                dfs(node.left, 1 + depth)
+            
+            if node.right:
+                dfs(node.right, 1 + depth)
+            
+            return
+            
+            
         
-        while queue:
-            num_nodes = len(queue)
-            
-            for i in range(num_nodes):
-                node = queue.popleft()
-                
-                if i == 0:
-                    leftmost_val = node.val 
-                
-                if node.left:
-                    queue.append(node.left)
-                
-                if node.right:
-                    queue.append(node.right)
-            
-        return leftmost_val
+        dfs(root, 0)
+        return leftmost_val[0]
+        
+        
+        
