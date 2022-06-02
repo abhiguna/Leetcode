@@ -14,9 +14,9 @@ class Solution:
         res = []
         queue = deque([root])
         while queue:
-            level_size = len(queue)
+            num_nodes = len(queue)
             curr_level = []
-            for i in range(level_size):
+            for i in range(num_nodes):
                 node = queue.popleft()
                 curr_level.append(node.val)
                 
