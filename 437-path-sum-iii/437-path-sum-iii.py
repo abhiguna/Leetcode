@@ -5,26 +5,29 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N^2)
+    # Time = O(N^2), N: # of nodes in the tree
     # Space = O(N)
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        # Edge case: empty tree
         if not root:
             return 0
         
-        total_count = 0
+        total_paths = [0]
         
         def dfs(node, slate):
-            nonlocal total_count
+            # Compute all suffix sums ending at the current node
             slate.append(node.val)
-            
-            # Compute suffix sum and increment total_count
             suffix_sum = 0
-            for i in range(len(slate) - 1, -1, -1):
+            for i in range(len(slate)-1, -1, -1):
                 suffix_sum += slate[i]
                 if suffix_sum == targetSum:
-                    total_count += 1
+                    total_paths[0] += 1
             
-            # Recursive case
+            # Base case: leaf node
+            if not node.left and not node.right:
+                slate.pop()
+                return
+            
             if node.left:
                 dfs(node.left, slate)
             
@@ -32,6 +35,9 @@ class Solution:
                 dfs(node.right, slate)
             
             slate.pop()
-        
+            
+                
         dfs(root, [])
-        return total_count
+        return total_paths[0]
+        
+        
