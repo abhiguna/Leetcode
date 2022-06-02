@@ -1,48 +1,49 @@
 class Solution:
-    # Time = O(M + N)
+    # Time = O(M + N), M: # of edges in the graph, N: # of vertices in the graph
     # Space = O(M + N)
-    
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        M = len(edges)
-        adj_list = [[] for _ in range(n)]
+        adj_list = [[] for i in range(n)]
+        visited = [-1] * n
+        parent = [-1] * n
         
+        # Build graph
         def build_graph():
-            for (u,v) in edges:
-                adj_list[u].append(v)
-                adj_list[v].append(u)
+            for (src, dest) in edges:
+                adj_list[src].append(dest)
+                adj_list[dest].append(src)
             return
         
-        visited = set()
-        parent = [-1] * n
-        timestamp = [0]
-        
-        def dfs(src):
-            visited.add(src)
-            
-            for nei in adj_list[src]:
-                # Neighbor not visited
-                if nei not in visited:
-                    parent[nei] = src
-                    has_cycle = dfs(nei)
-                    if has_cycle: return True
-                else:
-                    # Check for back edge -> cycle!
-                    # For undirected graphs -> compare parents of src and neighbor
-                    if parent[src] != nei:
-                        return True
-                    
-            return False
-            
-        
         build_graph()
-        num_components = 0
-        for v in range(n):
-            if v not in visited:
-                num_components += 1
-                # A tree must be connected!
-                if num_components > 1:
-                    return False
-                has_cycle = dfs(v)
-                if has_cycle: return False
         
+        # BFS for all unvisited nodes
+        def bfs(src):
+            queue = deque()
+            queue.append(src)
+            visited[src] = 1
+            
+            while queue:
+                node = queue.popleft()
+                
+                for nei in adj_list[node]:
+                    if visited[nei] == -1:
+                        visited[nei] = 1
+                        parent[nei] = node
+                        queue.append(nei)
+                    elif parent[node] != nei:
+                        return True
+            
+            return False
+        
+        components = 0
+        for i in range(n):
+            if visited[i] == -1:
+                components += 1
+                if components > 1:
+                    return False
+                
+                has_cycle = bfs(i)
+                if has_cycle:
+                    return False
+        
+        # Check validity
         return True
