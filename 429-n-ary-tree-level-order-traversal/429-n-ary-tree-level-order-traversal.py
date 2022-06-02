@@ -7,27 +7,26 @@ class Node:
 """
 
 class Solution:
-    
-    # Time = O(N)
-    # Space = O(W) ~ O(N) in worst case
+    # Time = O(N), N: # of nodes in the tree
+    # Space = O(N)
     def levelOrder(self, root: 'Node') -> List[List[int]]:
+        # Edge case
         if not root:
             return []
         
         res = []
         queue = deque([root])
-        
         while queue:
             num_nodes = len(queue)
             curr_level = []
-            
             for _ in range(num_nodes):
-                curr_node = queue.popleft()
-                curr_level.append(curr_node.val)
+                node = queue.popleft()
+                curr_level.append(node.val)
                 
-                for child in curr_node.children:
+                for child in node.children:
                     queue.append(child)
             
             res.append(curr_level)
         
         return res
+        
