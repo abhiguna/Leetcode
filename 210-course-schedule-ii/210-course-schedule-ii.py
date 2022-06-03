@@ -1,40 +1,52 @@
-from collections import *
-
 class Solution:
-    # Time = O(M + N)
-    # Space = O(M + N)
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        N = numCourses
-        M = len(prerequisites)
-        adj_list = [[] for _ in range(N)]
-        in_deg = defaultdict(int)
+        adj_list = [[] for i in range(numCourses)]
+        arrival = [-1] * numCourses
+        departure = [-1] * numCourses
+        timestamp = [0]
+        # A valid course schedule will have decreasing order of departure times
+        topsort = []
         
         def build_graph():
-            for (c, pre) in prerequisites:
-                adj_list[pre].append(c)
-                in_deg[c] += 1
+            for (a, b) in prerequisites:
+                adj_list[b].append(a)
             return
         
-        
-        build_graph()
-        bag = deque()
-        for c in range(N):
-            if in_deg[c] == 0:
-                bag.append(c)
-        
-        course_list = []
-        while bag:
-            curr = bag.popleft()
-            course_list.append(curr)
+        def dfs(node):
+            arrival[node] = timestamp[0]
+            timestamp[0] += 1
             
-            for neighbor in adj_list[curr]:
-                in_deg[neighbor] -= 1
-                if in_deg[neighbor] == 0:
-                    bag.append(neighbor)
+            for nei in adj_list[node]:
+                # Neighbor not visited
+                if arrival[nei] == -1:
+                    has_cycle = dfs(nei)
+                    if has_cycle:
+                        return True
+                else:
+                    # Found back edge -> cycle
+                    if departure[nei] == -1:
+                        return True
+            
+            departure[node] = timestamp[0]
+            timestamp[0] += 1
+            topsort.append(node)
+            return False
+                    
         
-        if len(course_list) < N:
-            return []
         
-        return course_list
+        
+        # Build a dir graph
+        build_graph()
+        
+        for v in range(numCourses):
+            if arrival[v] == -1:
+                has_cycle = dfs(v)
+                if has_cycle:
+                    return []
+        
+        topsort.reverse() # Topsort contains elements in increasing order of departure times, so we need to reverse it before returning it
+        return topsort
+        
+        
                 
         
