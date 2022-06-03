@@ -1,40 +1,45 @@
 class Solution:
-    # Time = O(N + M)
-    # Space = O(N + M)
+    # Time = O(M+N), M: len(prereqs), N: numCourses
+    # Space = O(M+N)
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        N = numCourses
-        M = len(prerequisites)
-        
-        adj_list = [[] for _ in range(N)]
-        arrival = [-1] * N
-        departure = [-1] * N
+        # Cycle detection
+        adj_list = [[] for i in range(numCourses)]
+        arrival = [-1] * numCourses
+        departure = [-1] * numCourses
         timestamp = [0]
         
         def build_graph():
-            for crs, pre in prerequisites:
-                adj_list[pre].append(crs)
+            for (a, b) in prerequisites:
+                adj_list[b].append(a)
             return
         
-        def dfs(src):
-            arrival[src] = timestamp[0]
+        # Builds dir. graph from prereqs
+        build_graph()
+        
+        def dfs(node):
+            arrival[node] = timestamp[0]
             timestamp[0] += 1
             
-            for neighbor in adj_list[src]:
-                if arrival[neighbor] == -1:
-                    has_cycle = dfs(neighbor)
-                    if has_cycle: return True
+            for nei in adj_list[node]:
+                if arrival[nei] == -1:
+                    has_cycle = dfs(nei)
+                    if has_cycle: 
+                        return True
                 else:
-                    # Check back edge
-                    if departure[neighbor] == -1:
-                        return True # hasCycle
+                    if departure[nei] == -1:
+                        # Found a back edge -> cycle
+                        return True
             
-            departure[src] = timestamp[0]
+            departure[node] = timestamp[0]
             timestamp[0] += 1
             return False
-            
-        build_graph()
-        for c in range(numCourses):
-            has_cycle = dfs(c)
-            if has_cycle: return False
+        
+        
+        # Outer loop
+        for v in range(numCourses):
+            if arrival[v] == -1:
+                has_cycle = dfs(v)
+                if has_cycle:
+                    return False
         
         return True
