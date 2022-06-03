@@ -1,31 +1,39 @@
 class Solution:
-    # Time = O(M + N)
-    # Space = O(N)
     def isBipartite(self, graph: List[List[int]]) -> bool:
         N = len(graph)
-        dist = [-1] * N
+        visited = [-1] * N
+        parent = [-1] * N
+        level = [-1] * N
         
         def bfs(src):
-            queue = deque([src])
-            dist[src] = 0
+            queue = deque()
+            queue.append(src)
+            visited[src] = 1
+            level[src] = 0
             
             while queue:
-                curr = queue.popleft()
+                node = queue.popleft()
                 
-                for neighbor in graph[curr]:
-                    if dist[neighbor] == -1:
-                        dist[neighbor] = dist[curr] + 1
-                        queue.append(neighbor)
-                    elif dist[curr] == dist[neighbor]:
-                        # Cross edge && odd length cycle
-                        return False
-            return True
+                for nei in graph[node]:
+                    if visited[nei] == -1:
+                        visited[nei] = 1
+                        parent[nei] = node
+                        level[nei] = level[node] + 1
+                        queue.append(nei)
+                    else:
+                        # Cross-edge
+                        if parent[node] != nei:
+                            # Check cross-edge at same level -> odd len cycle
+                            if level[node] == level[nei]:
+                                return True
+                
+            return False
+                        
         
-        for src in range(N):
-            if dist[src] == -1:
-                is_bipartite = bfs(src)
-                if not is_bipartite:
+        for v in range(N):
+            if visited[v] == -1:
+                has_odd_len_cycle = bfs(v)
+                if has_odd_len_cycle:
                     return False
         
         return True
-                    
