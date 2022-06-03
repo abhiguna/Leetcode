@@ -1,45 +1,49 @@
-from collections import deque
-
 class Solution:
-    # Time = O(M * N)
-    # Space = O(min(M, N))
+    # Time = O(M*N)
+    # Space = O(max(M, N))
     def numIslands(self, grid: List[List[str]]) -> int:
-        M = len(grid)
-        N = len(grid[0])
+        M, N = len(grid), len(grid[0])
         
-        def get_adj_neighbors(row, col):
-            res = []
-            if row + 1 < M:
-                res.append([row+1, col])
-            if row - 1 >= 0:
-                res.append([row-1, col])
-            if col + 1 < N:
-                res.append([row, col+1])
-            if col - 1 >= 0:
-                res.append([row, col-1])
+        def get_neighbors(curr_row, curr_col):
+            neighbors = []
+            if curr_row + 1 < M:
+                neighbors.append((curr_row+1, curr_col))
+            if curr_row - 1 >= 0:
+                neighbors.append((curr_row-1, curr_col))
+            if curr_col - 1 >= 0:
+                neighbors.append((curr_row, curr_col-1))
+            if curr_col + 1 < N:
+                neighbors.append((curr_row, curr_col+1))
             
-            return res
+            return neighbors
+            
+            
         
-        def bfs(start_row, start_col):
-            nonlocal grid 
-            
-            queue = deque([[start_row, start_col]])
-            grid[start_row][start_col] = "0"
+        def bfs(src_row, src_col):
+            queue = deque()
+            queue.append((src_row, src_col))
+            grid[src_row][src_col] = "0"
             
             while queue:
-                curr_row, curr_col = queue.popleft()
-                for (row, col) in get_adj_neighbors(curr_row, curr_col):
-                    if grid[row][col] == "1":
-                        grid[row][col] = "0"
-                        queue.append([row, col])
+                (curr_row, curr_col) = queue.popleft()
+                
+                for (nei_row, nei_col) in get_neighbors(curr_row, curr_col):
+                    if grid[nei_row][nei_col] == "1":
+                        grid[nei_row][nei_col] = "0"
+                        queue.append((nei_row, nei_col))
+                
             return
+            
+            
         
-        num_islands = 0
+        # Find the number of connected components in the graph
+        components = 0
         for row in range(M):
             for col in range(N):
-                # If curr cell is a land
                 if grid[row][col] == "1":
+                    components += 1
                     bfs(row, col)
-                    num_islands += 1
         
-        return num_islands
+        return components
+            
+            
