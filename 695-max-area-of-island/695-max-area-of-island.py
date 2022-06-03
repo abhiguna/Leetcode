@@ -1,45 +1,47 @@
 class Solution:
     # Time = O(M*N)
-    # Space = O(min(M, N))
+    # Space = O(max(M, N))
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
-        max_area = 0
+        M, N = len(grid), len(grid[0])
+        max_area = [0]
         
-        def get_adj_neighbors(row, col):
-            res = []
-            if row + 1 < len(grid):
-                res.append([row+1, col])
+        def get_neighbors(row, col):
+            neighbors = []
+            if row + 1 < M:
+                neighbors.append((row+1, col))
+            if col + 1 < N:
+                neighbors.append((row, col+1))
             if row - 1 >= 0:
-                res.append([row-1, col])
-            if col + 1 < len(grid[0]):
-                res.append([row, col+1])
+                neighbors.append((row-1, col))
             if col - 1 >= 0:
-                res.append([row, col-1])
+                neighbors.append((row, col-1))
             
-            return res
+            return neighbors
         
-        def bfs(src_row, src_col):
-            nonlocal max_area
-            
-            queue = deque([[src_row, src_col]])
+        def bfs(r, c):
+            queue = deque()
+            queue.append((r, c))
             curr_area = 1
-            grid[src_row][src_col] = 0
+            grid[r][c] = 0
             
             while queue:
-                (curr_row, curr_col) = queue.popleft()
+                (row, col) = queue.popleft()
                 
-                for (nrow, ncol) in get_adj_neighbors(curr_row, curr_col):
+                for (nrow, ncol) in get_neighbors(row, col):
                     if grid[nrow][ncol] == 1:
-                        curr_area += 1
                         grid[nrow][ncol] = 0
-                        queue.append([nrow, ncol])
-            
-            max_area = max(max_area, curr_area)
+                        curr_area += 1
+                        queue.append((nrow, ncol))
+
+            max_area[0] = max(max_area[0], curr_area)
             return
         
-        for row in range(len(grid)):
-            for col in range(len(grid[0])):
-                if grid[row][col] == 1:
-                    bfs(row, col)
         
-        return max_area
+        
+        for i in range(M):
+            for j in range(N):
+                if grid[i][j] == 1:
+                    bfs(i, j)
+        
+        return max_area[0]
         
