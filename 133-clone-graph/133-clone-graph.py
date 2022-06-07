@@ -8,7 +8,7 @@ class Node:
 
 class Solution:
     # Time = O(M+N)
-    # Space = O(1)
+    # Space = O(N)
     def cloneGraph(self, node: 'Node') -> 'Node':
         # Edge case
         if not node:
