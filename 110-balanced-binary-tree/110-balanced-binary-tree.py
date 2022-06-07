@@ -4,39 +4,31 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-
-
 class Solution:
-    
-    # Time = O(N)
-    # Space = O(H), H: height of the tree ~ O(logN) for balanced tree, ~O(N) for unbalanced tree
+    # Time = O(N), N: # of nodes in the tree
+    # Space = O(H), H: height of the call stack
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
         # Edge case: empty tree
         if not root:
             return True
         
-        is_balanced = True
+        is_balanced = [True]
         
-        def find_height(node):
-            nonlocal is_balanced
-            
-            # Base cases ~ leaf node/empty tree
+        def helper(node):
+            # Base case: leaf node
             if not node.left and not node.right:
                 return 0
             
-            # Recursive case ~ Internal node
-            left_height = 0
+            l_height, r_height = 0, 0
             if node.left:
-                left_height = 1 + find_height(node.left)
-            
-            right_height = 0
+                l_height = 1 + helper(node.left)
             if node.right:
-                right_height = 1 + find_height(node.right)
+                r_height = 1 + helper(node.right)
             
-            if abs(left_height - right_height) > 1:
-                is_balanced = False
-                
-            return max(left_height, right_height)
+            if abs(l_height - r_height) > 1:
+                is_balanced[0] = False
+            
+            return max(l_height, r_height)
         
-        find_height(root)
-        return is_balanced
+        helper(root)
+        return is_balanced[0]
