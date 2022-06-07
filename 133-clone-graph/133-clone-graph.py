@@ -7,8 +7,8 @@ class Node:
 """
 
 class Solution:
-    # Time = O(M+N), M: # of edges in the graph, N: # of nodes in the graph
-    # Space = O(N)
+    # Time = O(M+N)
+    # Space = O(1)
     def cloneGraph(self, node: 'Node') -> 'Node':
         # Edge case
         if not node:
@@ -16,20 +16,15 @@ class Solution:
         
         old_to_new = {}
         
-        queue = deque()
-        queue.append(node)
-        old_to_new[node] = Node(node.val)
-        
-        while queue:
-            src = queue.popleft()
-            
-            for nei in src.neighbors:
-                if nei not in old_to_new:
-                    old_to_new[nei] = Node(nei.val)
-                    queue.append(nei)
-                # Add two copies of each edge since connected, undirected graph
-                old_to_new[src].neighbors.append(old_to_new[nei])
-                    
-        
+        def dfs(src):
+            if src in old_to_new:
+                return old_to_new[src]
+            else:
+                old_to_new[src] = Node(src.val)
+                for nei in src.neighbors:
+                    nei_cpy = dfs(nei)
+                    old_to_new[src].neighbors.append(nei_cpy)
+                return old_to_new[src]
+                
+        dfs(node)
         return old_to_new[node]
-        
