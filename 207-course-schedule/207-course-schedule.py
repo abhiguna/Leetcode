@@ -23,11 +23,10 @@ class Solution:
             topsort.append(node)
             
             for nei in adj_list[node]:
-                if nei in in_deg:
-                    in_deg[nei] -= 1
-                    if in_deg[nei] == 0:
-                        queue.append(nei)
-                        del in_deg[nei]
+                # if nei in in_deg:
+                in_deg[nei] -= 1
+                if in_deg[nei] == 0:
+                    queue.append(nei)
         
         if len(topsort) < numCourses:
             return False
