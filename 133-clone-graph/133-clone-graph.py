@@ -5,30 +5,31 @@ class Node:
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
 """
-from collections import *
 
-# Time = O(M + N)
-# Space = O(M + N)
 class Solution:
+    # Time = O(M+N), M: # of edges in the graph, N: # of nodes in the graph
+    # Space = O(N)
     def cloneGraph(self, node: 'Node') -> 'Node':
-        # Empty graph
+        # Edge case
         if not node:
             return None
         
-        old_to_new = defaultdict(Node)
+        old_to_new = {}
         
-        def dfs(node):
-            # Base case
-            if node in old_to_new:
-                return old_to_new[node]
-            
-            copy = Node(node.val)
-            old_to_new[node] = copy
-            
-            for nei in node.neighbors:
-                copy.neighbors.append(dfs(nei))
-            
-            return copy
+        queue = deque()
+        queue.append(node)
+        old_to_new[node] = Node(node.val)
         
+        while queue:
+            src = queue.popleft()
+            
+            for nei in src.neighbors:
+                if nei not in old_to_new:
+                    old_to_new[nei] = Node(nei.val)
+                    queue.append(nei)
+                # Add two copies of each edge since connected, undirected graph
+                old_to_new[src].neighbors.append(old_to_new[nei])
+                    
         
-        return dfs(node)
+        return old_to_new[node]
+        
