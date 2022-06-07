@@ -1,41 +1,37 @@
 class Solution:
-    # Time = O(M+N), M: len(prereqs), N: numCourses
-    # Space = O(M+N)
+    # Time = O(M + N), M: len(prerequisites), N: numCourses
+    # Space = O(M + N)
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        # Cycle detection
         adj_list = [[] for i in range(numCourses)]
         arrival = [-1] * numCourses
         departure = [-1] * numCourses
         timestamp = [0]
         
         def build_graph():
-            for (a, b) in prerequisites:
-                adj_list[b].append(a)
+            for (c, pre) in prerequisites:
+                adj_list[pre].append(c)
             return
         
-        # Builds dir. graph from prereqs
-        build_graph()
-        
-        def dfs(node):
-            arrival[node] = timestamp[0]
+        def dfs(src):
+            arrival[src] = timestamp[0]
             timestamp[0] += 1
             
-            for nei in adj_list[node]:
+            for nei in adj_list[src]:
                 if arrival[nei] == -1:
                     has_cycle = dfs(nei)
-                    if has_cycle: 
+                    if has_cycle:
                         return True
                 else:
+                    # backedge
                     if departure[nei] == -1:
-                        # Found a back edge -> cycle
                         return True
             
-            departure[node] = timestamp[0]
+            departure[src] = timestamp[0]
             timestamp[0] += 1
             return False
         
+        build_graph()
         
-        # Outer loop
         for v in range(numCourses):
             if arrival[v] == -1:
                 has_cycle = dfs(v)
