@@ -1,5 +1,5 @@
 class Solution:
-    # Check if topsort if possible
+    # Kahn's Topological Sort 
     # Time = O(M+N)
     # Space = O(M+N)
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
@@ -23,7 +23,6 @@ class Solution:
             topsort.append(node)
             
             for nei in adj_list[node]:
-                # if nei in in_deg:
                 in_deg[nei] -= 1
                 if in_deg[nei] == 0:
                     queue.append(nei)
