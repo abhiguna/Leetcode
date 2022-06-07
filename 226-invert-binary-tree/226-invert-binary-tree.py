@@ -6,29 +6,28 @@
 #         self.right = right
 class Solution:
     # Time = O(N), N: # of nodes in the tree
-    # Space = O(N)
+    # Space = O(H), H: height of the tree
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         # Edge case: empty tree
         if not root:
             return None
         
-        def dfs(node):
+        def helper(root):
             # Base case: leaf node
-            if not node.left and not node.right:
+            if not root.left and not root.right:
                 return
             
-            prev_left = node.left 
-            prev_right = node.right
-            node.left = prev_right
-            node.right = prev_left
+            old_left, old_right = root.left, root.right
+            root.left = old_right
+            root.right = old_left
             
-            if node.left:
-                dfs(node.left)
+            if root.left:
+                helper(root.left)
             
-            if node.right:
-                dfs(node.right)
+            if root.right:
+                helper(root.right)
             
             return
             
-        dfs(root)
+        helper(root)
         return root
