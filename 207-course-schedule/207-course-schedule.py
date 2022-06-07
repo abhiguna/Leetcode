@@ -1,41 +1,41 @@
 class Solution:
-    # Time = O(M + N), M: len(prerequisites), N: numCourses
-    # Space = O(M + N)
+    # Check if topsort if possible
+    # Time = O(M+N)
+    # Space = O(M+N)
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        adj_list = [[] for i in range(numCourses)]
-        arrival = [-1] * numCourses
-        departure = [-1] * numCourses
-        timestamp = [0]
+        # Build the in-degree of each node
+        in_deg = {v:0 for v in range(numCourses)}
+        adj_list = [[] for v in range(numCourses)]
         
-        def build_graph():
-            for (c, pre) in prerequisites:
-                adj_list[pre].append(c)
-            return
+        for (c, pre) in prerequisites:
+            adj_list[pre].append(c)
+            in_deg[c] += 1
         
-        def dfs(src):
-            arrival[src] = timestamp[0]
-            timestamp[0] += 1
+        # Add all the nodes with in-deg of 0 to a queue
+        queue = deque()
+        for c in in_deg:
+            if in_deg[c] == 0:
+                queue.append(c)
+        
+        topsort = []
+        while queue:
+            node = queue.popleft()
+            topsort.append(node)
             
-            for nei in adj_list[src]:
-                if arrival[nei] == -1:
-                    has_cycle = dfs(nei)
-                    if has_cycle:
-                        return True
-                else:
-                    # backedge
-                    if departure[nei] == -1:
-                        return True
-            
-            departure[src] = timestamp[0]
-            timestamp[0] += 1
+            for nei in adj_list[node]:
+                if nei in in_deg:
+                    in_deg[nei] -= 1
+                    if in_deg[nei] == 0:
+                        queue.append(nei)
+                        del in_deg[nei]
+        
+        if len(topsort) < numCourses:
             return False
-        
-        build_graph()
-        
-        for v in range(numCourses):
-            if arrival[v] == -1:
-                has_cycle = dfs(v)
-                if has_cycle:
-                    return False
-        
+
         return True
+            
+        
+        
+        
+        
+        
