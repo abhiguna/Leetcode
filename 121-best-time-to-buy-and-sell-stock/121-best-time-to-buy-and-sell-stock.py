@@ -3,12 +3,15 @@ class Solution:
     # Space = O(1)
     def maxProfit(self, prices: List[int]) -> int:
         N = len(prices)
+        buy = 0
         max_profit = 0
-        buy_price = prices[0]
+        curr_profit = 0
         
-        for i in range(1, N):
-            max_profit = max(max_profit, prices[i] - buy_price)
-            buy_price = min(buy_price, prices[i])
+        for sell in range(N):
+            if prices[sell] - prices[buy] < 0:
+                buy = sell
+            else:
+                curr_profit = max(curr_profit, prices[sell] - prices[buy])
+                max_profit = max(max_profit, curr_profit)
         
         return max_profit
-            
