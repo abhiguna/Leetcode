@@ -4,22 +4,20 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # Approach: iterative version
-    
     # Time = O(N)
     # Space = O(1)
     def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        # Edge case: empty or singleton list
-        if not head or not head.next:
-            return head
+        # Edge case
+        if not head:
+            return None
         
+        prev = None
         curr = head
-        pred = None
+        
         while curr:
-            succ = curr.next 
-            curr.next = pred
-            pred = curr
-            curr = succ
-            
-        # The pred ptr points to the head of the reversed list
-        return pred
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+        
+        return prev
