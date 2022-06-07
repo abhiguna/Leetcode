@@ -1,21 +1,20 @@
 class Solution:
-    
     # Time = O(N)
     # Space = O(1)
     def productExceptSelf(self, nums: List[int]) -> List[int]:
         N = len(nums)
-
-        res = []
-        # Compute the left product of the res array
-        curr_prod = 1
-        for i in range(N):
-            res.append(curr_prod)
-            curr_prod *= nums[i]
+        res = [0] * N
         
-        # Update result array by multiplying with the right product
-        curr_prod = 1
+        # Fill prefix product
+        prefix_prod = 1
+        for i in range(0, N):
+            res[i] = prefix_prod
+            prefix_prod = prefix_prod * nums[i]
+            
+        # Multiply suffix product
+        suffix_prod = 1
         for i in range(N-1, -1, -1):
-            res[i] *= curr_prod
-            curr_prod *= nums[i]
+            res[i] = res[i] * suffix_prod
+            suffix_prod = suffix_prod * nums[i]
         
         return res
