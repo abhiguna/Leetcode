@@ -1,38 +1,43 @@
 class Solution:
-    def two_sum(self, nums, i, res):
-        j = i + 1
-        k = len(nums) - 1
-        while j < k:
-            curr_sum = nums[i] + nums[j] + nums[k]
-            if curr_sum < 0:
-                j += 1
-            elif curr_sum > 0:
-                k -= 1
-            else:
-                # Found a triplet
-                res.append([nums[i], nums[j], nums[k]])
-                j += 1
-                # Skip duplicates
-                while j < k and nums[j] == nums[j-1]:
-                    j += 1
-                
-                k -= 1
-                # Skip dups.
-                while j < k and nums[k] == nums[k+1]:
-                    k -= 1
-        return
-    
     # Time = O(N^2)
-    # Space = O(N)
+    # Space = O(1)
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
         N = len(nums)
+        # Edge case
+        if N <= 2:
+            return []
+        
+        nums.sort()
         res = []
-        for i in range(N - 2):
+        
+        def find_pair(first, target, start, end):
+            j = start
+            k = end
+            while j < k:
+                if nums[j] + nums[k] == target:
+                    res.append([first, nums[j], nums[k]])
+                    j += 1
+                    while j < k and nums[j] == nums[j-1]:
+                        j += 1
+                    k -= 1
+                    while j < k and nums[k] == nums[k+1]:
+                        k -= 1
+                elif nums[j] + nums[k] > target:
+                    k -= 1
+                    # Skip duplicates
+                    while j < k and nums[k] == nums[k+1]:
+                        k -= 1
+                else:
+                    j += 1
+                    while j < k and nums[j] == nums[j-1]:
+                        j += 1
+            return
+        
+        
+        for i in range(N-2):
             # Skip duplicates
             if i > 0 and nums[i] == nums[i-1]:
                 continue
-            
-            self.two_sum(nums, i, res)
+            find_pair(nums[i], -nums[i], i+1, N-1)
         
         return res
