@@ -1,6 +1,6 @@
 class Solution:
-    # Time = O(T*2^N)
-    # Space = O(T)
+    # Time = O(N^(T/M)+1)
+    # Space = O(T/M)
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         N = len(candidates)
         T = target
