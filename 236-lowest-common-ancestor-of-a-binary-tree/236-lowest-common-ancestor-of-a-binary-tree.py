@@ -7,20 +7,14 @@
 
 class Solution:
     # Time = O(N), N: # of nodes in the tree
-    # Space = O(N)
+    # Space = O(H), H: height of the tree
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        # Edge case: empty tree
-        if not root:
-            return None
-        
         LCA = [None]
         
         def dfs(node):
             p_found, q_found = False, False
-            
             if node.val == p.val:
                 p_found = True
-            
             if node.val == q.val:
                 q_found = True
             
@@ -28,21 +22,23 @@ class Solution:
             if not node.left and not node.right:
                 return (p_found, q_found)
             
-            # Recursive case: internal node
+            # Recursive case: internal_node
+            p_found_left, q_found_left = False, False
+            p_found_right, q_found_right = False, False
+            
             if node.left:
-                (p_in_left, q_in_left) = dfs(node.left)
-                p_found = p_found or p_in_left
-                q_found = q_found or q_in_left
+                (p_found_left, q_found_left) = dfs(node.left)
             
             if node.right:
-                (p_in_right, q_in_right) = dfs(node.right)
-                p_found = p_found or p_in_right
-                q_found = q_found or q_in_right
+                (p_found_right, q_found_right) = dfs(node.right)
             
-            if p_found and q_found and LCA[0] == None:
+            p_found = p_found or p_found_left or p_found_right
+            q_found = q_found or q_found_left or q_found_right
+            
+            if (p_found, q_found) == (True, True) and LCA[0] == None:
                 LCA[0] = node
             
             return (p_found, q_found)
-        
-        (p_found, q_found) = dfs(root)
+             
+        dfs(root)
         return LCA[0]
