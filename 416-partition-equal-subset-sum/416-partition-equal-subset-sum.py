@@ -1,40 +1,36 @@
 class Solution:
-    # Approach: Memoization
-    
-    # Time = O(N*half_total)
-    # Space = O(N*half_total)
+    # Time = O(N*S)
+    # Space = O(N*S)
     def canPartition(self, nums: List[int]) -> bool:
-        # Edge case
-        if sum(nums) % 2 != 0:
+        N = len(nums)
+        S = sum(nums)
+        
+        # Edge case: total sum is odd
+        if S % 2 == 1:
             return False
         
-        memo = {}
-        N = len(nums)
-        total = sum(nums)
-        half_total = total // 2
-        memo[(0, 0)] = True
+        table = [[False for j in range((S//2)+1)] for i in range(N+1)]
+        table[0][0] = True
         
         # Base cases
+        # Fill first column
+        for i in range(1, N+1):
+            table[i][0] = True
+        
         # Fill first row
-        for val in range(1, half_total + 1):
-            memo[(0, val)] = False
-            
-        # Fill first col
-        for size in range(1, N+1):
-            memo[(size, 0)] = True
+        for j in range(1, (S//2) + 1):
+            table[0][j] = False
         
-        def helper(size, target):
-            if (size, target) in memo:
-                return memo[(size, target)]
-            
-            # Include curr element
-            if target - nums[size-1] >= 0:
-                memo[(size, target)] = helper(size - 1, target - nums[size-1]) or helper(size-1, target)
-            # Exclude curr element
-            else:
-                memo[(size, target)] = helper(size-1, target)
-            
-            return memo[(size, target)]
+        # Fill remaining cells
+        for i in range(1, N+1):
+            for amount in range(1, (S//2) + 1):
+                # Exclude case
+                table[i][amount] = table[i-1][amount]
+                
+                # Include case
+                if nums[i-1] <= amount:
+                    table[i][amount] = table[i][amount] or table[i-1][amount-nums[i-1]]
         
-        return helper(N, half_total)
-            
+        return table[N][S//2]
+                
+        
