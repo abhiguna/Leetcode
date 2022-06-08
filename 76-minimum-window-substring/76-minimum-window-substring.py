@@ -1,28 +1,35 @@
 from collections import *
 
 class Solution:
-    # Time = O(N)
+    # Time = O(M+N)
     # Space = O(1)
     def minWindow(self, s: str, t: str) -> str:
         M, N = len(s), len(t)
-        hmap_t = Counter(t)
-        hmap_s = defaultdict(int)
-        
-        left = 0
+        t_map = Counter(t)
+        s_map = defaultdict(int)
         min_len = math.inf
-        min_start, min_end = -1, -1
-        
-        for i in range(M):
-            hmap_s[s[i]] += 1
-            while left <= i and all(hmap_s[c] >= hmap_t[c] for c in hmap_t):
-                if (i-left+1) < min_len:
-                    min_len = i-left+1
-                    min_start = left
-                    min_end = i
-                        
-                hmap_s[s[left]] -= 1
-                if hmap_s[s[left]] == 0:
-                    del hmap_s[s[left]]
+        str_start = -1
+        str_end = -1
+
+        left = 0
+        for right in range(M):
+            s_map[s[right]] += 1
+            
+            while left <= right and all(s_map[key] >= t_map[key] for key in t_map.keys()):
+                if right-left+1 < min_len:
+                    min_len = right-left+1
+                    str_start = left
+                    str_end = right
+                    
+                s_map[s[left]] -= 1
                 left += 1
-                
-        return s[min_start:min_end+1] if min_len != math.inf else ""
+        
+        if str_start == -1:
+            return ""
+        
+        return s[str_start:str_end+1]
+        
+        
+        
+        
+        
