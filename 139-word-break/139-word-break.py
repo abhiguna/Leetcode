@@ -1,23 +1,15 @@
 class Solution:
-    
-    # Time = O(N * M)
+    # Time = O(N^2)
     # Space = O(N)
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         N = len(s)
-        M = len(wordDict)
+        table = [False] * (N+1)
+        table[0] = True
         
-        dp = [False for i in range(N + 1)]
-        # Base
-        dp[N] = True
+        for i in range(1, N+1):
+            for j in range(0, i+1):
+                can_break = table[j] and (s[j:i] in wordDict)
+                table[i] = table[i] or can_break
         
-        for i in range(N-1, -1, -1):
-            for word in wordDict:
-                # Check matches
-                if (i + len(word)) <= N and s[i:i + len(word)] == word:
-                    dp[i] = dp[i + len(word)]
-                
-                # Check if more words need to be compared
-                if dp[i]:
-                    break
+        return table[N]
         
-        return dp[0]
