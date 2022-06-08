@@ -3,14 +3,8 @@ class Solution:
     # Space = O(max(M, N))
     def orangesRotting(self, grid: List[List[int]]) -> int:
         M, N = len(grid), len(grid[0])
-        
-        # Populate queue with rotten oranges
-        queue = deque()
-        
-        for r in range(M):
-            for c in range(N):
-                if grid[r][c] == 2:
-                    queue.append((r, c, 0))
+        min_time = 0
+        fresh_oranges = 0
         
         def get_neighbors(row, col):
             neighbors = []
@@ -24,23 +18,32 @@ class Solution:
                 neighbors.append((row, col-1))
             return neighbors
             
-        # Multi-source bfs
-        min_time = 0
-        while queue:
-            (r, c, time) = queue.popleft()
-            # Update min time
-            min_time = max(min_time, time)
-            
-            for (nr, nc) in get_neighbors(r, c):
-                if grid[nr][nc] == 1:
-                    grid[nr][nc] = 2
-                    queue.append((nr, nc, time + 1))
-                    
-        # Check to make sure no fresh oranges still exist
+        queue = deque()
+        
         for r in range(M):
             for c in range(N):
-                if grid[r][c] == 1:
-                    return -1
+                # Rotten orange
+                if grid[r][c] == 2: 
+                    queue.append((r, c))
+                # Fresh orange
+                elif grid[r][c] == 1:
+                    fresh_oranges += 1
+        
+        while queue and fresh_oranges > 0:
+            num_rotten = len(queue)
+            
+            for i in range(num_rotten):
+                (row, col) = queue.popleft()
+                
+                for (nrow, ncol) in get_neighbors(row, col):
+                    if grid[nrow][ncol] == 1:
+                        grid[nrow][ncol] = 2
+                        fresh_oranges -= 1
+                        queue.append((nrow, ncol))
+            
+            min_time += 1
+        
+        if fresh_oranges > 0:
+            return -1
         
         return min_time
-        
