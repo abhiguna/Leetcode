@@ -10,12 +10,19 @@ class Solution:
         min_len = math.inf
         str_start = -1
         str_end = -1
-
+        
+        def contains(map1, map2):
+            for key in map2.keys():
+                if map1[key] < map2[key]:
+                    return False
+            return True
+            
+            
         left = 0
         for right in range(M):
             s_map[s[right]] += 1
             
-            while left <= right and all(s_map[key] >= t_map[key] for key in t_map.keys()):
+            while left <= right and contains(s_map, t_map):
                 if right-left+1 < min_len:
                     min_len = right-left+1
                     str_start = left
