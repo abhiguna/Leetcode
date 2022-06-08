@@ -6,33 +6,29 @@
 #         self.right = right
 class Solution:
     # Time = O(N), N: # of nodes in the tree
-    # Space = O(N)
+    # Space = O(H), H: height of the tree
     def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        # Edge case: empty tree
-        if not root:
-            return 0
-        
-        max_diameter = [0]
+        diameter = [0]
         
         def dfs(node):
             # Base case: leaf node
             if not node.left and not node.right:
                 return 0
             
-            # Recursive case: internal node
             left_height, right_height = 0, 0
             
             if node.left:
-                left_height = max(left_height, 1 + dfs(node.left))
-            
+                left_height = 1 + dfs(node.left)
             if node.right:
-                right_height = max(right_height, 1 + dfs(node.right))
+                right_height = 1 + dfs(node.right)
             
-            diameter = left_height + right_height
-            max_diameter[0] = max(max_diameter[0], diameter)
+            longest_path_len = left_height + right_height
+            diameter[0] = max(diameter[0], longest_path_len)
             
+            # Return the height of the current node to the parent
             return max(left_height, right_height)
             
             
+        
         dfs(root)
-        return max_diameter[0]
+        return diameter[0]
