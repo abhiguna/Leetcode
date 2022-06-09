@@ -4,31 +4,33 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
-from collections import deque
 class Solution:
-    
-    # Time = O(N)
-    # Space = O(N)
+    # Time = O(N), N: # of nodes in the tree
+    # Space = O(H), H: height of the tree
     def maxDepth(self, root: Optional[TreeNode]) -> int:
+        # Edge case
         if not root:
             return 0
         
-        curr_depth = 0
+        max_depth = [0]
         
-        queue = deque([root])
+        def dfs(node, depth):
+            depth += 1
+            
+            # Base case: leaf node
+            if not node.left and not node.right:
+                max_depth[0] = max(max_depth[0], depth)
+                return
+            
+            if node.left:
+                dfs(node.left, depth)
+            
+            if node.right:
+                dfs(node.right, depth)
+            
+            depth -= 1
+            return
+            
+        dfs(root, 0)
+        return max_depth[0]
         
-        while queue:
-            num_nodes = len(queue)
-            
-            curr_depth += 1
-            
-            for _ in range(num_nodes):
-                curr_node = queue.popleft()
-                
-                if curr_node.left:
-                    queue.append(curr_node.left)
-                
-                if curr_node.right:
-                    queue.append(curr_node.right)
-            
-        return curr_depth
