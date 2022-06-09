@@ -5,7 +5,7 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N), N: # of nodes in the tree
+    # Time = O(N)
     # Space = O(N)
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         # Edge case: empty tree
@@ -13,7 +13,10 @@ class Solution:
             return []
         
         res = []
-        queue = deque([root])
+        
+        # BFS traversal
+        queue = deque()
+        queue.append(root)
         
         while queue:
             num_nodes = len(queue)
@@ -21,14 +24,14 @@ class Solution:
             for i in range(num_nodes):
                 node = queue.popleft()
                 
-                # Found the rightmost element in the current level
+                # Add to res if last node in the level
                 if i == num_nodes - 1:
                     res.append(node.val)
                 
                 if node.left:
                     queue.append(node.left)
-                
                 if node.right:
                     queue.append(node.right)
-            
+        
         return res
+            
