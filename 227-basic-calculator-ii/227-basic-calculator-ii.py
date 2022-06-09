@@ -1,4 +1,6 @@
 class Solution:
+    # Time = O(N)
+    # Space = O(1)
     def calculate(self, s: str) -> int:
         N = len(s)
         
