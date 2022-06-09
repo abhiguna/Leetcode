@@ -3,35 +3,35 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-from heapq import *
-import math
-
 class Solution:
-    # Time = O(N*klogk), N: the total number of ListNodes
-    # Spaxe = O(k)
+    # Time = O(klogk + N), k: len(lists), N: # of nodes in all the linkedlists
+    # Space = O(k)
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
-        sentinel = ListNode(-math.inf, None)
-        tail = sentinel
+        k = len(lists)
+        
+        sentinel = ListNode()
+        head, tail = sentinel, sentinel
+        
         min_heap = []
         
-        # Add the first k nodes to the min_heap
-        for l in lists:
-            if l:
-                heappush(min_heap, (l.val, id(l), l))
+        # Insert the first k nodes into the min_heap
+        for i in range(k):
+            # If list is not empty
+            if lists[i]:
+                heappush(min_heap, (lists[i].val, id(lists[i]), lists[i]))
         
         while min_heap:
-            (value, _id, node) = heappop(min_heap)
+            (val, _id, node) = heappop(min_heap)
+            # Append to merged list
             tail.next = node
-            tail = tail.next 
-            node = node.next 
-            tail.next = None
-            # If nodes still exist in the list
+            tail = tail.next
+            node = node.next
+            
             if node:
                 heappush(min_heap, (node.val, id(node), node))
         
-        # Get the head and return it
-        head = sentinel.next 
+        head = head.next
         return head
-    
-    
-                
+                    
+                    
+                    
