@@ -6,7 +6,6 @@ class Solution:
         pal = [""]
         pal_len = [0]
         
-        
         def find_longest_pal(left, right):
             while left >= 0 and right < N and s[left] == s[right]:
                 if right-left+1 > pal_len[0]:
