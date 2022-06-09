@@ -1,5 +1,5 @@
 class Solution:
-    # Time = O(N^2*M) N: len(wordList), M: len(wordList[0])
+    # Time = O(N*M^2) N: len(wordList), M: len(wordList[0])
     # Space = O(N^2*M)
     
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
@@ -8,19 +8,6 @@ class Solution:
         word_set = set(wordList)
         adj_list = defaultdict(set)
         visited = set()
-        
-        def diff_by_one(str1, str2):
-            M = len(str1)
-            i = 0
-            diff = 0
-            while i < M:
-                if str1[i] != str2[i]:
-                    diff += 1
-                    if diff > 1:
-                        return False
-                i += 1
-                
-            return (diff == 1)
         
         def build_graph():
             for i in range(len(wordList)):
