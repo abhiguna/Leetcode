@@ -1,14 +1,12 @@
 class Solution:
     # Time = O(N)
-    # Space = O(N)
+    # Space = O(1)
     def largestRectangleArea(self, heights: List[int]) -> int:
         N = len(heights)
+        stack = []
         
-        # Compute the left and right spans by finding 
-        # the idx of the prev smaller element and the next smaller element
-        stack = deque() # (value, idx)
         left_span = [0] * N
-        
+        # Find the number of elements that have a height greater than or equal to the current element
         for i in range(0, N):
             while stack and stack[-1][0] >= heights[i]:
                 stack.pop()
@@ -21,8 +19,7 @@ class Solution:
             stack.append((heights[i], i))
         
         right_span = [0] * N
-        stack = deque()
-        
+        stack = []
         for i in range(N-1, -1, -1):
             while stack and stack[-1][0] >= heights[i]:
                 stack.pop()
@@ -34,11 +31,9 @@ class Solution:
             
             stack.append((heights[i], i))
         
-        # Compute the areas for rectangles that cover the roof 
-        #. of the current building completely
         max_area = 0
         for i in range(N):
             curr_area = heights[i] * (left_span[i] + right_span[i] - 1)
             max_area = max(max_area, curr_area)
-        
         return max_area
+        
