@@ -1,18 +1,11 @@
 class Solution:
-    # Time = O(N*M)
-    # Space = O(N*M)
+    # Time = O(m*n)
+    # Space = O(m*n)
     def uniquePaths(self, m: int, n: int) -> int:
-        dp = [[0 for j in range(m+1)] for i in range(n+1)]
+        table = [[1 for j in range(n)] for i in range(m)]
         
-        # Fill in the dp entries
-        for i in range(1, n+1):
-            for j in range(1, m+1):
-                if i == 1 and j == 1:
-                    dp[i][j] = 1
-                    continue
-            
-                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        for i in range(1, m):
+            for j in range(1, n):
+                table[i][j] = table[i-1][j] + table[i][j-1]
         
-        return dp[n][m]
-                
-                
+        return table[m-1][n-1]
