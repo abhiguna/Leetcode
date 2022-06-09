@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    # Time = O(klogk + N), k: len(lists), N: # of nodes in all the linkedlists
+    # Time = O(Nlogk), k: len(lists), N: # of nodes in all the linkedlists
     # Space = O(k)
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
         k = len(lists)
