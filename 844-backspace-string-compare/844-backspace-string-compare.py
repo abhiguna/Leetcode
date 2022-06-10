@@ -1,6 +1,6 @@
 class Solution:
     # Time = O(M + N)
-    # Space = O(M + N)
+    # Space = O(1)
     def backspaceCompare(self, s: str, t: str) -> bool:
         s = list(s)
         t = list(t)
