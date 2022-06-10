@@ -3,23 +3,17 @@ class Solution:
     # Space = O(N)
     def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
         N = len(temperatures)
-        stack = deque() # Stack contains (temperature, day)
-        res = []
+        mon_stack = []
+        res = [0] * N
         
         for i in range(N-1, -1, -1):
-            while stack and stack[-1][0] <= temperatures[i]:
-                stack.pop()
+            # Remove all the days that have a temperature <= curr temperature
+            while mon_stack and mon_stack[-1][0] <= temperatures[i]:
+                mon_stack.pop()
             
-            # If stack not empty -> find the difference in days
-            if stack:
-                res.append(stack[-1][1] - i)
+            if mon_stack:
+                res[i] = mon_stack[-1][1] - i
             
-            # If stack is empty -> add 0
-            else:
-                res.append(0)
+            mon_stack.append((temperatures[i], i))
             
-            # Push the current day
-            stack.append((temperatures[i], i))
-        
-        res.reverse()
         return res
