@@ -10,10 +10,15 @@ class Solution:
         start_idx = 0
         for i in range(len(gas)):
             total += (gas[i] - cost[i])
+            
             # If total diff becomes negative, set the next gas station to be the start idx
             if total < 0:
-                start_idx = i + 1
+                start_idx = -1
                 total = 0
+            else:
+                # If did not start already from a previous gas station, start it anew from the current gas station
+                if start_idx == -1:
+                    start_idx = i
         
         return start_idx
         
