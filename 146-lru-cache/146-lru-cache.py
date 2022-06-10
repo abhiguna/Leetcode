@@ -4,7 +4,9 @@ class CacheNode:
         self.val = val
         self.prev = None
         self.next = None
-        
+
+# Time = O(1)
+# Space = O(1)
 class LRUCache:
     def __init__(self, capacity: int):
         self.LRU = None
