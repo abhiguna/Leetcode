@@ -5,23 +5,24 @@
 #         self.left = None
 #         self.right = None
 
+# Time = O(N)
+# Space = O(1)
 class Codec:
-    # Time = O(N), N: # of nodes in the tree
-    # Space = O(H), H: height of the tree
+
     def serialize(self, root):
         """Encodes a tree to a single string.
         
         :type root: TreeNode
         :rtype: str
         """
-        # Edge case: empty tree
+        # Edge case:
         if not root:
             return ""
+        
         res = []
         
-        # preorder traversal: N-L-R
         def dfs(node):
-            # Base case: null node
+            # Base case:
             if not node:
                 res.append("N")
                 return
@@ -30,12 +31,12 @@ class Codec:
             dfs(node.left)
             dfs(node.right)
             return
-            
+        
         dfs(root)
         return ",".join(res)
-    
-    # Time = O(N), N: # of nodes in the tree
-    # Space = O(H), H: height of the tree
+        
+        
+
     def deserialize(self, data):
         """Decodes your encoded data to tree.
         
@@ -46,24 +47,24 @@ class Codec:
         if data == "":
             return None
         
-        val_list = data.split(",")
+        data = data.split(",")
         idx = [0]
         
         def dfs():
-            # Base case: null node -> "N"
-            if val_list[idx[0]] == "N":
+            # Base case: out of bounds
+            if data[idx[0]] == "N":
                 idx[0] += 1
                 return None
             
-            # Recursive case: preorder traversal
-            node = TreeNode(int(val_list[idx[0]]))
+            root = TreeNode(int(data[idx[0]]))
             idx[0] += 1
-            node.left = dfs()
-            node.right = dfs()
-            return node
+            root.left = dfs()
+            root.right = dfs()
             
-        root = dfs()
-        return root
+            return root
+        
+        return dfs()
+        
         
 
 # Your Codec object will be instantiated and called as such:
