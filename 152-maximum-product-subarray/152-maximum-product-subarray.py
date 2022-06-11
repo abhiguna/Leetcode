@@ -1,17 +1,19 @@
 class Solution:
-    
     # Time = O(N)
     # Space = O(1)
     def maxProduct(self, nums: List[int]) -> int:
-        max_product = max(nums)
-        curr_max = 1
-        curr_min = 1
+        res = max(nums) # 0 -> [-1]
+        curr_min, curr_max = 1, 1
         
-        for num in nums:
-            temp = curr_max
-            curr_max = max(num, temp * num, curr_min * num)
-            curr_min = min(num, temp * num, curr_min * num)
+        for n in nums:
+            if n == 0:
+                curr_min, curr_max = 1, 1
+                continue
             
-            max_product = max(max_product, curr_max, curr_min)
+            temp = curr_max
+            curr_max = max(n*curr_max, n*curr_min, n)
+            curr_min = min(n*temp, n*curr_min, n)
+            res = max(res, curr_max)
         
-        return max_product
+        return res
+            
