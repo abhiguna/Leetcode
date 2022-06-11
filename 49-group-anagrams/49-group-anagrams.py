@@ -1,12 +1,15 @@
-from collections import defaultdict
-
 class Solution:
-    # Time = O(n*klogk) n=length of array of strings, k=length of each string
-    # Space = O(n*k) 
+    # Time = O(N*M), N = len(strs), M = largest len(s)
+    # Space = O(N)
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        groupings = defaultdict(list)
+        res = defaultdict(list) # mapping charCount to list of Anagrams
+        
         for s in strs:
-            key = "".join(sorted(list(s)))
-            groupings[key].append(s)
-        return [anagram for anagram in groupings.values()]
-    
+            count = [0] * 26 # a ... z
+            for c in s:
+                count[ord(c) - ord("a")] += 1
+            
+            res[tuple(count)].append(s)
+        
+        return res.values()
+            
