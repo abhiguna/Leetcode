@@ -2,24 +2,18 @@ class Solution:
     # Time = O(N)
     # Space = O(1)
     def findDuplicate(self, nums: List[int]) -> int:
-        N = len(nums)
+        # Find meeting point
+        hare, tortoise = 0, 0
         
-        # Cycle sort: 1, ..., N values in idxs 0,...., N
-        for i in range(N):
-            while nums[i] != i:
-                dest = nums[i]
-                # Sanity check
-                if nums[i] != nums[dest]:
-                    # Swap
-                    nums[i], nums[dest] = nums[dest], nums[i]
-                else:
-                    break
-        
-        # Find the duplicate
-        for i in range(N):
-            if nums[i] != i:
-                return nums[i]
-        
-        # Will not be reached since we know there is at least one duplicate
-        return -1
-        
+        while True:
+            hare = nums[nums[hare]]
+            tortoise = nums[tortoise]
+            if hare == tortoise:
+                break
+            
+        # Find start of the cycle
+        tortoise = 0
+        while hare != tortoise:
+            tortoise = nums[tortoise]
+            hare = nums[hare]
+        return tortoise
