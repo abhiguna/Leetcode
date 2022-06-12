@@ -5,8 +5,8 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N), N: # of nodes in the tree
-    # Space = O(N)
+    # Time = O(n), n: # of nodes in the tree
+    # Space = O(h), h: height of the tree
     def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
         # Edge case: empty tree
         if not root:
@@ -14,28 +14,20 @@ class Solution:
         
         res = []
         
-        def dfs(node, slate, path_sum):
+        def dfs(node, rem_sum, slate):
+            slate.append(node.val)
             # Base case: leaf node
             if not node.left and not node.right:
-                path_sum += node.val
-                slate.append(node.val)
-                if path_sum == targetSum:
+                if node.val == rem_sum:
                     res.append(slate[:])
-                path_sum -= node.val
-                slate.pop()
-                return
-            
-            # Internal node: internal node
-            path_sum += node.val
-            slate.append(node.val)
-            
-            if node.left:
-                dfs(node.left, slate, path_sum)
-            if node.right:
-                dfs(node.right, slate, path_sum)
-            
-            path_sum -= node.val
+            # General case
+            else:
+                if node.left:
+                    dfs(node.left, rem_sum - node.val, slate)
+                
+                if node.right:
+                    dfs(node.right, rem_sum - node.val, slate)
             slate.pop()
         
-        dfs(root, [], 0)
+        dfs(root, targetSum, [])
         return res
