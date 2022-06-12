@@ -1,16 +1,16 @@
 class Solution:
-    # Time = O(N)
+    # Time = O(n)
     # Space = O(1)
     def countBits(self, n: int) -> List[int]:
-        res = []
-        for num in range(0, n+1):
-            one_bits = 0
-            
-            while num > 0:
-                # chew up at the lsb
-                one_bits += (num & 1)
-                num = num >> 1
-            
-            res.append(one_bits)
+        table = [0] * (n+1)
+        curr_offset = 1
         
-        return res
+        for i in range(1, n+1):
+            # Update the curr_offset based on i value
+            if i == curr_offset * 2: # i.e. powers of 2: 2, 4, 8, 16, ...
+                curr_offset = curr_offset * 2
+            
+            table[i] = 1 + table[i-curr_offset]
+        
+        return table
+        
