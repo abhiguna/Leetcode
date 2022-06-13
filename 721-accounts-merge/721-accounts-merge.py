@@ -1,54 +1,47 @@
 class Solution:
+    # Time = O(n*mlog(n*m)), n: len(accounts), m: avg. length of each account 
+    # Space = O(n*m)
     def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        email_to_name = defaultdict(str)
         adj_list = defaultdict(set)
-        visited = set()
-        res = []
+        email_to_name = {}
         
         def build_graph():
-            for acc in accounts:
-                for e in range(1, len(acc)):
-                    email_to_name[acc[e]] = acc[0]
-                    
+            for idx, acc in enumerate(accounts):
+                email_to_name[acc[1]] = acc[0]
                 
-                for i in range(2, len(acc)):
-                    adj_list[acc[1]].add(acc[i])
-                    adj_list[acc[i]].add(acc[1])
-
-            return
+                for email in acc[2:]:
+                    email_to_name[email] = acc[0]
+                    adj_list[acc[1]].add(email)
+                    adj_list[email].add(acc[1])
                 
-                
-        
-        def bfs(email):
-            queue = deque()
-            queue.append(email)
-            visited.add(email)
-            min_heap = []
-            heappush(min_heap, email)
-            
-            while queue:
-                curr_email = queue.popleft()
-                
-                for nemail in adj_list[curr_email]:
-                    if nemail not in visited:
-                        visited.add(nemail)
-                        heappush(min_heap, nemail)
-                        queue.append(nemail)
-            
-            account = []
-            account.append(email_to_name[min_heap[0]])
-            while len(min_heap) > 0:
-                account.append(heappop(min_heap))
-            res.append(account)
-            return
-            
-            
         
         build_graph()
-        for email in email_to_name.keys():
-            if email not in visited:
-                bfs(email)
+        
+        visited = set()
+        res = []
+        account = []
+        
+        def dfs(src):
+            visited.add(src)
+            account.append(src)
+            
+            for nei in adj_list[src]:
+                if nei not in visited:
+                    dfs(nei)
+            
+        
+        for e in email_to_name:
+            if e not in visited:
+                dfs(e)
+                account.sort()
+                res.append([email_to_name[account[0]]] + [acc for acc in account])
+                account = []
         
         return res
-    
+                
+        
+        
+        
+        
+
         
