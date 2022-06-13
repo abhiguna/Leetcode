@@ -1,15 +1,14 @@
 class Solution:
-    # Time = O(N^2)
-    # Space = O(N)
+    # Time = O(n^2)
+    # Space = O(n)
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
-        N = len(s)
-        table = [False] * (N+1)
-        table[0] = True
+        n = len(s)
+        word_set = set(wordDict)
+        table = [False] * (n)
         
-        for i in range(1, N+1):
-            for j in range(0, i+1):
-                can_break = table[j] and (s[j:i] in wordDict)
-                table[i] = table[i] or can_break
+        for j in range(n):
+            for i in range(j, -1, -1):
+                if (s[i:j+1] in word_set) and ((i > 0 and table[i-1]) or (i == 0)):
+                    table[j] = True
         
-        return table[N]
-        
+        return table[n-1]
