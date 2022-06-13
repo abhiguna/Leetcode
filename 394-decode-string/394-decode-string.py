@@ -26,12 +26,6 @@ class Solution:
                 sub = sub * count
                 stack.append("".join(sub))
         
-        while len(stack) > 1:
-            sub = deque()
-            sub.appendleft(stack.pop())
-            sub.appendleft(stack.pop())
-            stack.append("".join(sub))
-        
-        return stack[-1]
+        return "".join(stack)
                 
         
