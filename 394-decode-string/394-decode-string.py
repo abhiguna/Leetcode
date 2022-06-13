@@ -1,5 +1,5 @@
 class Solution:
-    # Time = O(n), n: len(s)
+    # Time = O(k*n), n: len(s), k: max k value in the encoded string
     # Space = O(n)
     def decodeString(self, s: str) -> str:
         stack = []
@@ -22,6 +22,7 @@ class Solution:
                 while stack and stack[-1].isdigit():
                     digit.appendleft(stack.pop())
                 
+                # Decode the current string + append it to the stack
                 count = int("".join(digit))
                 sub = sub * count
                 stack.append("".join(sub))
