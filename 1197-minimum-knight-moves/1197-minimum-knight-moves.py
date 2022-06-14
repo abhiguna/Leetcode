@@ -1,4 +1,8 @@
 class Solution:
+    # On an average case
+    
+    # Time = O(sqrt(8)^d), d: the min moves required to reach (x, y) from (0, 0)
+    # Space = O(sqrt(8)^d)
     def minKnightMoves(self, x: int, y: int) -> int:
         # Edge case: already at target loc
         if (x, y) == (0, 0):
