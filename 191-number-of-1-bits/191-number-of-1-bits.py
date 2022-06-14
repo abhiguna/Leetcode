@@ -4,8 +4,10 @@ class Solution:
     def hammingWeight(self, n: int) -> int:
         num_ones = 0
         num = n
-        while num != 0:
-            num = num & (num-1)
-            num_ones += 1
+        bitmask = 1
+        while num > 0:
+            if num & bitmask == 1:
+                num_ones += 1
+            num = num >> 1
         return num_ones
         
