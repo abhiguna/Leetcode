@@ -23,6 +23,7 @@ class Solution:
         b_queue.append((x, y))
         
         while f_queue and b_queue:
+            # By popping only from one queue at a time -> ensures intersection at d/2.
             if f_visited[f_queue[0]] < b_visited[b_queue[0]]:
                 # Process forward queue
                 (fi, fj) = f_queue.popleft()
