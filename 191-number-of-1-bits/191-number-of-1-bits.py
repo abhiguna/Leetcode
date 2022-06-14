@@ -1,11 +1,11 @@
 class Solution:
-    # Time = O(Q), Q: # of 1 bits
+    # Time = O(1) -> fixed length of bits (i.e. at most 32-bits given for a number)
     # Space = O(1)
     def hammingWeight(self, n: int) -> int:
-        num_cpy = n
-        count = 0
-        while num_cpy != 0:
-            num_cpy = num_cpy & (num_cpy-1)
-            count += 1
-        return count
-            
+        num_ones = 0
+        num = n
+        while num != 0:
+            num = num & (num-1)
+            num_ones += 1
+        return num_ones
+        
