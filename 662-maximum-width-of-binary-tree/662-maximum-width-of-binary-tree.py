@@ -5,37 +5,35 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(N), N: # of nodes in the tree
-    # Space = O(N)
+    # Time = O(n), n: # of nodes in the tree
+    # Space = O(n)
     def widthOfBinaryTree(self, root: Optional[TreeNode]) -> int:
-        # Edge case: empty tree
-        if not root:
-            return 0
-        
-        queue = deque([(root, 1)])
         max_width = 0
+        queue = deque()
+        queue.append((root, 1))
         
         while queue:
             num_nodes = len(queue)
-            first = None
-            last = None
+            leftmost_idx, rightmost_idx = 0, 0
             
-            for _ in range(num_nodes):
-                (node, id) = queue.popleft()
+            for i in range(num_nodes):
+                (node, idx) = queue.popleft()
+                
+                # Update leftmost and rightmost idx
+                if i == 0:
+                    leftmost_idx = idx
+                
+                if i == num_nodes - 1:
+                    rightmost_idx = idx
                 
                 if node.left:
-                    queue.append((node.left, 2*id)) # If tree was complete this would be its id
+                    queue.append((node.left, 2*idx))
                 
                 if node.right:
-                    queue.append((node.right, 2*id + 1))
-                
-                last = id
-                
-                if not first:
-                    first = id
+                    queue.append((node.right, (2*idx) + 1))
             
-            max_width = max(max_width, last-first+1)
+            curr_width = rightmost_idx - leftmost_idx + 1
+            max_width = max(max_width, curr_width)
         
         return max_width
-                    
             
