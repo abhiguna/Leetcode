@@ -57,12 +57,12 @@ class Solution:
         f_queue.append(start)
         f_visited[start] = 0
         
-        # b_queue = deque()
-        # b_queue.append(goal)
-        # b_visited[goal] = 0
+        b_queue = deque()
+        b_queue.append(goal)
+        b_visited[goal] = 0
         
         
-        while f_queue:
+        while f_queue and b_queue:
             # Process f_queue
             f_node = f_queue.popleft()
             
@@ -71,21 +71,19 @@ class Solution:
                     f_visited[f_nei] = 1 + f_visited[f_node]
                     f_queue.append(f_nei)
                     
-                    if f_nei == goal:
-                        return f_visited[f_nei]
-                    # if f_nei in b_visited:
-                    #     return f_visited[f_nei] + b_visited[f_nei]
+                    if f_nei in b_visited:
+                        return f_visited[f_nei] + b_visited[f_nei]
             
             # Process b_queue
-#             b_node = b_queue.popleft()
+            b_node = b_queue.popleft()
             
-#             for b_nei in get_neighbors(b_node):
-#                 if b_nei not in b_visited:
-#                     b_visited[b_nei] = 1 + b_visited[b_node]
-#                     b_queue.append(b_nei)
+            for b_nei in get_neighbors(b_node):
+                if b_nei not in b_visited:
+                    b_visited[b_nei] = 1 + b_visited[b_node]
+                    b_queue.append(b_nei)
                     
-#                     if b_nei in f_visited:
-#                         return b_visited[b_nei] + f_visited[b_nei]
+                    if b_nei in f_visited:
+                        return b_visited[b_nei] + f_visited[b_nei]
         
         # Impossible to reach goal state
         return -1
