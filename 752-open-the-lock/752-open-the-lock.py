@@ -10,7 +10,8 @@ class Solution:
         if "0000" in deadends: # If source in deadends -> can never reach target combination
             return -1
         
-        visited = {"0000": 0}
+        f_visited = {"0000": 0}
+        b_visited = {target: 0}
         
         def get_neighbors(s):
             neighbors = []
@@ -26,23 +27,36 @@ class Solution:
                     neighbors.append(n2)
             return neighbors
             
-        def bfs(s):
-            queue = deque()
-            queue.append("0000")
+        def bidir_bfs():
+            f_queue = deque()
+            f_queue.append("0000")
             
-            while queue:
-                node = queue.popleft()
+            b_queue = deque()
+            b_queue.append(target)
+            
+            while f_queue and b_queue:
+                f_node = f_queue.popleft()
                 
-                for nei in get_neighbors(node):
-                    if nei not in visited:
-                        visited[nei] = 1 + visited[node]
-                        queue.append(nei)
+                for f_nei in get_neighbors(f_node):
+                    if f_nei not in f_visited:
+                        f_visited[f_nei] = 1 + f_visited[f_node]
+                        f_queue.append(f_nei)
                         # Found target
-                        if nei == target:
-                            return visited[target]
+                        if f_nei in b_visited:
+                            return f_visited[f_nei] + b_visited[f_nei]
+                
+                b_node = b_queue.popleft()
+                
+                for b_nei in get_neighbors(b_node):
+                    if b_nei not in b_visited:
+                        b_visited[b_nei] = 1 + b_visited[b_node]
+                        b_queue.append(b_nei)
+                        # Found target
+                        if b_nei in f_visited:
+                            return b_visited[b_nei] + f_visited[b_nei]
             
             # Cannot reach target
             return -1
         
         
-        return bfs("0000")
+        return bidir_bfs()
