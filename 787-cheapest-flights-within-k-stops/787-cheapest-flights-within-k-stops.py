@@ -1,21 +1,20 @@
 class Solution:
     # Time = O(m*k)
-    # Space = O(n)
+    # Space = O(n*k)
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, k: int) -> int:
-        prices = [math.inf] * n
-        prices[src] = 0
+        table = [[math.inf for j in range(k+2)] for i in range(n)]
+        # Base case
+        table[src][0] = 0
         
-        # Update prices array to hold min price for each stop from [0, k]
-        for stops in range(0, k+1):
-            tmp_prices = prices[:]
-            for (u, v, weight) in flights:
-                if prices[u] == math.inf:
-                    continue
-                if prices[u] + weight < tmp_prices[v]:
-                    tmp_prices[v] = prices[u] + weight
-            prices = tmp_prices
-            
-        if prices[dst] == math.inf:
+        for col in range(1, k+2):
+            # Initialization
+            for v in range(n):
+                table[v][col] = table[v][col-1]
+            for (u, v, w) in flights:
+                    table[v][col] = min(table[v][col], table[u][col-1] + w)
+        
+        # Cannot reach dest within k stops
+        if table[dst][k+1] == math.inf:
             return -1
         
-        return prices[dst]
+        return table[dst][k+1]
