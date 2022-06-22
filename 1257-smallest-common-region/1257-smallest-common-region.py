@@ -2,6 +2,8 @@ from collections import *
 import math
 
 class Solution:
+    # Time = O(n), n: # of unique regions
+    # Space = O(n)
     def findSmallestRegion(self, regions: List[List[str]], region1: str, region2: str) -> str:
         adj_list = defaultdict(list)
         
