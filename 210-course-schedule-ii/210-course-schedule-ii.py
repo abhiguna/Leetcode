@@ -2,32 +2,50 @@ class Solution:
     # Time = O(m+n)
     # Space = O(m+n)
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        m, n = len(prerequisites), numCourses
+        m = len(prerequisites)
+        n = numCourses
         
         adj_list = [[] for v in range(n)]
-        in_deg = {v: 0 for v in range(n)}
-        ordering = []
+        topsort = []
+        arrival = [-1] * n
+        departure = [-1] * n
+        timestamp = [0]
         
-        # Build adj_list and in_deg
-        for (course, prereq) in prerequisites:
-            adj_list[prereq].append(course)
-            in_deg[course] += 1
-        
-        queue = deque()
-        for (key, val) in in_deg.items():
-            if val == 0:
-                queue.append(key)
-        
-        while queue:
-            course = queue.popleft()
-            ordering.append(course)
+        def build_graph():
+            for (c, pre) in prerequisites:
+                adj_list[pre].append(c)
             
-            for nei in adj_list[course]:
-                in_deg[nei] -= 1
-                if in_deg[nei] == 0:
-                    queue.append(nei)
+        # Build the graph
+        build_graph()
         
-        if len(ordering) < n:
-            return []
+        # DFS
+        def dfs(src):
+            arrival[src] = timestamp[0]
+            timestamp[0] += 1
+            
+            for nei in adj_list[src]:
+                # Tree Edge
+                if arrival[nei] == -1:
+                    has_cycle = dfs(nei)
+                    if has_cycle:
+                        return True
+                # Back Edge -> cycle exists
+                else:
+                    if departure[nei] == -1:
+                        return True
+            
+            # Add the node to topsort before departing
+            topsort.append(src)
+            departure[src] = timestamp[0]
+            timestamp[0] += 1
+            return False
         
-        return ordering
+        # Outer loop
+        for v in range(n):
+            if arrival[v] == -1:
+                has_cycle = dfs(v)
+                if has_cycle:
+                    return []
+        
+        topsort.reverse() # Must be in decreasing order of departure times
+        return topsort
