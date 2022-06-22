@@ -1,26 +1,22 @@
 class Solution:
-    # Time = O(A*C), C: len(coins), A: amount
-    # Space = O(A)
+    # Time = O(n*C)
+    # Space = O(n)
     def coinChange(self, coins: List[int], amount: int) -> int:
-        # Edge case:
-        if amount == 0:
+        n = amount
+        C = len(coins)
+        # Edge case
+        if n == 0:
             return 0
         
-        C = len(coins)
-        A = amount
-        
-        table = [math.inf] * (A+1)
+        table = [math.inf] * (n+1)
         table[0] = 0
         
-        for a in range(1, A+1):
+        for a in range(1, n+1):
             for c in coins:
                 if c <= a:
                     table[a] = min(table[a], 1 + table[a-c])
         
-        if table[A] == math.inf:
+        if table[n] == math.inf:
             return -1
         
-        return table[A]
-        
-        
-        
+        return table[n]
