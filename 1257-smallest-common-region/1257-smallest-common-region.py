@@ -13,8 +13,12 @@ class Solution:
         build_graph()
         smallest_region = [None]
         min_size = [math.inf]
+        memo = {}
         
         def dfs(src):
+            if src in memo:
+                return memo[src]
+            
             (r1, r2) = (src == region1, src == region2)
             size[0] += 1
             
@@ -32,6 +36,7 @@ class Solution:
                 smallest_region[0] = src
                 min_size[0] = size[0]
             
+            memo[src] = (r1, r2)
             return (r1, r2)
         
         for v in list(adj_list.keys()):
