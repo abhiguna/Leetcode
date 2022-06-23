@@ -17,7 +17,7 @@ class Solution:
         def bfs(row, col):
             visited = set()
             queue = deque() # (row, col, key_state, path_len)
-            queue.append((row, col, -1, ""))
+            queue.append((row, col, 0, ""))
             visited.add((row, col, ""))
             
             while queue:
@@ -39,7 +39,7 @@ class Solution:
                     if (nr, nc, nkey_state) not in visited:
                         visited.add((nr, nc, nkey_state))
                         queue.append((nr, nc, path_len+1, nkey_state))
-                        if len(key_state) == num_keys:
+                        if len(nkey_state) == num_keys:
                             return path_len + 1
                             
             return -1
