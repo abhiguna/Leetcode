@@ -1,60 +1,46 @@
 class Solution:
-    # Time = O(m*n), m: avg length of each word, n: len(words)
-    # Space = O(m*n)
+    # Time = O(n*m), n: len(words), m: avg. len of each word
+    # Space = O(n*m)
     def alienOrder(self, words: List[str]) -> str:
-        # Initialize adj_list and in_deg
         adj_list = {c: set() for word in words for c in word}
-        in_deg = {c: 0 for c in adj_list.keys()}
+        in_deg = {c: 0 for word in words for c in word}
         
-        def build_graph():
-            for i in range(len(words) - 1):
-                word = words[i]
-                next_word = words[i+1]
-                
-                # Edge case: same prefix but len(word) > len(word_2) 
-                #     -> invalid lex. order
-                min_len = min(len(word), len(next_word))
-                if (word[:min_len]==next_word[:min_len]) and \
-                    (len(word) > len(next_word)):
-                    return False
-                
-                for j in range(min_len):
-                    # Check if differs
-                    if word[j] != next_word[j]:
-                        # Edge case: skip duplicates
-                        if next_word[j] not in adj_list[word[j]]:
-                            adj_list[word[j]].add(next_word[j])
-                            in_deg[next_word[j]] += 1
-                        break
-                
-            return True
+        # Build the graph
+        for i in range(len(words) - 1):
+            curr_word = words[i]
+            nxt_word = words[i+1]
+            # Edge case -> no valid topsort order
+            min_len = min(len(curr_word), len(nxt_word))
+            if curr_word[:min_len] == nxt_word[:min_len] and \
+                len(curr_word) > len(nxt_word):
+                return ""
             
-        # Build graph
-        valid_input = build_graph()
-        if not valid_input:
-            return ""
+            for j in range(min_len):
+                if curr_word[j] != nxt_word[j]:
+                    if nxt_word[j] not in adj_list[curr_word[j]]:
+                        adj_list[curr_word[j]].add(nxt_word[j])
+                        in_deg[nxt_word[j]] += 1
+                    break
         
+        # Kahn's topsort algorithm
         topsort = []
-        
-        # Topological sort
         queue = deque()
-        for key, val in in_deg.items():
+        for (key, val) in in_deg.items():
             if val == 0:
+                topsort.append(key)
                 queue.append(key)
-        
+                
         while queue:
             node = queue.popleft()
-            topsort.append(node)
             
             for nei in adj_list[node]:
                 in_deg[nei] -= 1
                 if in_deg[nei] == 0:
+                    topsort.append(nei)
                     queue.append(nei)
         
-        # Check if cycle exists
-        if len(topsort) < len(in_deg.keys()):
+        # Check cycle
+        if len(topsort) < len(in_deg):
             return ""
         
         return "".join(topsort)
-                    
-                    
