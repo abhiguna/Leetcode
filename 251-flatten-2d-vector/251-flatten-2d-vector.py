@@ -1,21 +1,35 @@
-# Time = O(n), n: # of elements in the vec
-# Space = O(1)
 class Vector2D:
+    # Time = O(1)
+    # Space = O(1)
     def __init__(self, vec: List[List[int]]):
-        self.vec = []
-        for r in range(len(vec)):
-            for c in range(len(vec[r])):
-                self.vec.append(vec[r][c])
-        self.pos = 0
+        self.vec = vec
+        self.outer = 0
+        self.inner = 0
 
+    # Time = O(v/n), v: max # of inner values in any list, n: # of outer lists
+    # Space = O(1)
+    def advance_to_next(self):
+        while self.outer < len(self.vec) and \
+                self.inner == len(self.vec[self.outer]):
+            self.outer += 1
+            self.inner = 0
+    
+    # Time = O(v/n), v: max # of inner values in any list, n: # of outer lists
+    # Space = O(1)
     def next(self) -> int:
-        num = self.vec[self.pos]
-        self.pos += 1
+        # Advance to the next non-empty row
+        self.advance_to_next()
+        num = self.vec[self.outer][self.inner]
+        self.inner += 1
         return num
-        
-
+    
+    # Time = O(v/n), v: max # of inner values in any list, n: # of outer lists
+    # Space = O(1)
     def hasNext(self) -> bool:
-        return (self.pos + 1) <= len(self.vec)
+        # Skip all the empty rows in the vector
+        self.advance_to_next()
+        return self.outer < len(self.vec)
+        
         
 
 
