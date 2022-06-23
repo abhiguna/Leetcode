@@ -20,21 +20,31 @@
 #        Return None if this NestedInteger holds a single integer
 #        """
 
-# Time = O(n), n: total # of integers in nestedList
-# Space = O(n)
+# Time = O(m/n), m: total # of lists and n: total # of integers in nestedList
+# Space = O(m + n)
 class NestedIterator:
     def __init__(self, nestedList: [NestedInteger]):
         
+        # Iterative dfs
         def flatten_list(nestedList):
             res = []
-            for n in nestedList:
-                if n.isInteger():
-                    res.append(n.getInteger())
+            
+            stack = []
+            for n in nestedList[::-1]:
+                stack.append(n)
+            
+            while stack:
+                top = stack.pop()
+                
+                if top.isInteger():
+                    res.append(top.getInteger())
                 else:
-                    res.extend(flatten_list(n.getList()))
+                    for n in reversed(top.getList()):
+                        stack.append(n)
             return res
         
-        self.flat_list = deque(flatten_list(nestedList))
+        self.flat_list = deque()
+        self.flat_list.extend(flatten_list(nestedList))
     
     def next(self) -> int:
         return self.flat_list.popleft()
