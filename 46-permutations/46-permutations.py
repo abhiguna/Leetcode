@@ -1,5 +1,5 @@
 class Solution:
-    # Time = O(n*n!), n: len(nums)
+    # Time = O(n*n!)
     # Space = O(n)
     def permute(self, nums: List[int]) -> List[List[int]]:
         n = len(nums)
@@ -10,13 +10,14 @@ class Solution:
             if idx == n:
                 res.append(nums[:])
                 return
-            # General case:
+            # General case
             for i in range(idx, n):
                 # Swap
-                nums[idx], nums[i] = nums[i], nums[idx]
+                nums[i], nums[idx] = nums[idx], nums[i]
                 helper(idx+1)
                 # Unswap
-                nums[idx], nums[i] = nums[i], nums[idx]
+                nums[i], nums[idx] = nums[idx], nums[i]
                 
+        
         helper(0)
         return res
