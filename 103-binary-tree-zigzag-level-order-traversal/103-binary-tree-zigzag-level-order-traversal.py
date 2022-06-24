@@ -5,17 +5,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    # Time = O(n), n: # nodes in the tree
+    # Time = O(n), n: # of nodes in the tree
     # Space = O(w), w: max-width of the tree ~ at most O(n)
     def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         # Edge case: empty tree
         if not root:
             return []
         
-        res = []
-        l_to_r = True
         
-        # BFS traversal
+        res = []
+        is_lr = True
+        
+        # BFS
         queue = deque()
         queue.append(root)
         
@@ -23,10 +24,10 @@ class Solution:
             num_nodes = len(queue)
             level = deque()
             
-            for i in range(num_nodes):
+            for _ in range(num_nodes):
                 node = queue.popleft()
                 
-                if l_to_r:
+                if is_lr:
                     level.append(node.val)
                 else:
                     level.appendleft(node.val)
@@ -36,7 +37,8 @@ class Solution:
                 if node.right:
                     queue.append(node.right)
             
-            l_to_r = not l_to_r
+            # End of level
+            is_lr = not is_lr
             res.append(list(level))
         
         return res
