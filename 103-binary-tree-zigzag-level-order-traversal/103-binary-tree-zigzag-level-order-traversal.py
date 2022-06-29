@@ -4,6 +4,15 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+
+
+"""
+root = [3,9,20,null,null,15,7]
+
+[[3],[20,9],[15,7]]
+
+"""
 class Solution:
     # Time = O(n), n: # of nodes in the tree
     # Space = O(w), w: max-width of the tree ~ at most O(n)
@@ -12,11 +21,10 @@ class Solution:
         if not root:
             return []
         
-        
         res = []
-        is_lr = True
         
         # BFS
+        is_lr = True
         queue = deque()
         queue.append(root)
         
@@ -37,8 +45,7 @@ class Solution:
                 if node.right:
                     queue.append(node.right)
             
-            # End of level
-            is_lr = not is_lr
             res.append(list(level))
+            is_lr = not is_lr
         
         return res
