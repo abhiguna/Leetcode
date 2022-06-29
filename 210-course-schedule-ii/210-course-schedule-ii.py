@@ -1,35 +1,39 @@
 class Solution:
-    # Time = O(n + m), n: numCourses, m: len(prerequisites)
-    # Space = O(n + m)
+    # Time = O(m+n), m: len(prerequisites), n: numCourses
+    # Space = O(m+n)
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        adj_list = [[] for _ in range(numCourses)]
-        in_deg = {c: 0 for c in range(numCourses)}
+        adj_list = [[] for v in range(numCourses)]
+        in_deg = {v: 0 for v in range(numCourses)}
         
-        # Build the graph
-        for (course, pre) in prerequisites:
-            adj_list[pre].append(course)
-            in_deg[course] += 1
+        def build_graph():
+            for (course, pre) in prerequisites:
+                adj_list[pre].append(course)
+                in_deg[course] += 1
         
-        topsort = []
+        # Build graph
+        build_graph()
         
-        # Kahn's topological sort algorithm
+        # Kahn's topological sorting algo.
+        res = []
         queue = deque()
-        for (c, deg) in in_deg.items():
-            if deg == 0:
-                topsort.append(c)
-                queue.append(c)
+        
+        for (course, num_pre) in in_deg.items():
+            if num_pre == 0:
+                res.append(course)
+                queue.append(course)
         
         while queue:
-            curr_course = queue.popleft()
+            course = queue.popleft()
             
-            for ncourse in adj_list[curr_course]:
+            for ncourse in adj_list[course]:
                 in_deg[ncourse] -= 1
                 if in_deg[ncourse] == 0:
-                    topsort.append(ncourse)
                     queue.append(ncourse)
+                    res.append(ncourse)
         
-        # Check cycle
-        if len(topsort) < numCourses:
+        # Check for cycle
+        if len(res) < numCourses:
             return []
         
-        return topsort
+        return res
+        
