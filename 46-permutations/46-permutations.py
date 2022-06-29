@@ -6,18 +6,17 @@ class Solution:
         res = []
         
         def helper(idx):
-            # Base case:
+            # Base case: idx == n
             if idx == n:
                 res.append(nums[:])
                 return
-            # General case
+            
             for i in range(idx, n):
                 # Swap
                 nums[i], nums[idx] = nums[idx], nums[i]
                 helper(idx+1)
                 # Unswap
                 nums[i], nums[idx] = nums[idx], nums[i]
-                
         
         helper(0)
         return res
