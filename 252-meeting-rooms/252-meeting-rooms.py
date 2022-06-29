@@ -4,20 +4,20 @@ class Solution:
     def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
         n = len(intervals)
         
-        # Edge case: n == 0
+        # Edge case: n == 0 -> no overlap
         if n == 0:
             return True
         
-        # Sort by start time
-        intervals.sort(key = lambda x: x[0])
+        intervals.sort(key=lambda x: x[0]) # O(nlogn)
         
         prev_interval = intervals[0]
         
-        for i in range(1, n):
-            # Check overlap
+        for i in range(1, n): # O(n)
+            # Overlap
             if intervals[i][0] < prev_interval[1]:
                 return False
-            
-            prev_interval[1] = max(prev_interval[1], intervals[i][1])
+            elif intervals[i][1] >= prev_interval[1]:
+                prev_interval = intervals[i]
         
         return True
+                
