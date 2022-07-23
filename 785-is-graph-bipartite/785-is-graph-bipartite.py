@@ -1,10 +1,13 @@
 class Solution:
+    # Time = O(m+n), m: # of edges, n: # of vertices
+    # Space = O(n)
     def isBipartite(self, graph: List[List[int]]) -> bool:
-        N = len(graph)
-        visited = [-1] * N
-        parent = [-1] * N
-        level = [-1] * N
+        n = len(graph) 
+        visited = [-1] * n
+        level = [-1] * n
+        parent = [-1] * n
         
+        # BFS -> check if component is bipartite
         def bfs(src):
             queue = deque()
             queue.append(src)
@@ -16,24 +19,24 @@ class Solution:
                 
                 for nei in graph[node]:
                     if visited[nei] == -1:
-                        visited[nei] = 1
                         parent[nei] = node
-                        level[nei] = level[node] + 1
+                        level[nei] = 1 + level[node]
+                        visited[nei] = 1
                         queue.append(nei)
                     else:
-                        # Cross-edge
-                        if parent[node] != nei:
-                            # Check cross-edge at same level -> odd len cycle
-                            if level[node] == level[nei]:
-                                return True
-                
-            return False
-                        
+                        # Cross edge
+                        if nei != parent[node]:
+                            # Check for odd len cycle -> same level as node
+                            if level[nei] == level[node]:
+                                return False
+            return True
         
-        for v in range(N):
+        # Outer loop -> traverse through all the components
+        for v in range(n):
             if visited[v] == -1:
-                has_odd_len_cycle = bfs(v)
-                if has_odd_len_cycle:
+                is_bipartite = bfs(v)
+                if not is_bipartite:
                     return False
         
         return True
+        
