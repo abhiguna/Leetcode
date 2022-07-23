@@ -1,42 +1,39 @@
 class Solution:
-    # Time = O(m+n), m: # of edges, n: # of vertices
+    # Time = O(m+n), m: # of edges, n: # of nodes
     # Space = O(n)
     def isBipartite(self, graph: List[List[int]]) -> bool:
-        n = len(graph) 
+        color_map = {
+            "red": "black",
+            "black": "red"
+        }
+        n = len(graph)
         visited = [-1] * n
-        level = [-1] * n
         parent = [-1] * n
+        colors = [None] * n
         
-        # BFS -> check if component is bipartite
-        def bfs(src):
-            queue = deque()
-            queue.append(src)
-            visited[src] = 1
-            level[src] = 0
+        # DFS -> check if valid coloring exists
+        def dfs(node, color):
+            visited[node] = 1
+            colors[node] = color
             
-            while queue:
-                node = queue.popleft()
-                
-                for nei in graph[node]:
-                    if visited[nei] == -1:
-                        parent[nei] = node
-                        level[nei] = 1 + level[node]
-                        visited[nei] = 1
-                        queue.append(nei)
-                    else:
-                        # Cross edge
-                        if nei != parent[node]:
-                            # Check for odd len cycle -> same level as node
-                            if level[nei] == level[node]:
-                                return False
+            for nei in graph[node]:
+                if visited[nei] == -1:
+                    parent[nei] = node
+                    is_bipartite = dfs(nei, color_map[color])
+                    if not is_bipartite:
+                        return False
+                else:
+                    # Back edge
+                    if nei != parent[node]:
+                        if colors[nei] == colors[node]:
+                            return False
             return True
         
-        # Outer loop -> traverse through all the components
+        # Outer Loop -> traverse through all components
         for v in range(n):
             if visited[v] == -1:
-                is_bipartite = bfs(v)
+                is_bipartite = dfs(v, "red")
                 if not is_bipartite:
                     return False
         
         return True
-        
