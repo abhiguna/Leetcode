@@ -1,22 +1,25 @@
 class Solution:
-    # Time = O(M*N)
-    # Space = O(max(M, N))
+    # Time = O(m*n)
+    # Space = O(m+n)
     def numIslands(self, grid: List[List[str]]) -> int:
-        M, N = len(grid), len(grid[0])
+        # Dimensions of the grid
+        m, n = len(grid), len(grid[0])
         
         def get_neighbors(row, col):
             neighbors = []
-            if row + 1 < M:
-                neighbors.append((row+1, col))
-            if col + 1 < N:
-                neighbors.append((row, col+1))
-            if row - 1 >= 0:
+            if row-1>=0 and grid[row-1][col] == "1":
                 neighbors.append((row-1, col))
-            if col - 1 >= 0:
+            if col-1>=0 and grid[row][col-1] == "1":
                 neighbors.append((row, col-1))
+            if row+1<m and grid[row+1][col] == "1":
+                neighbors.append((row+1, col))
+            if col+1<n and grid[row][col+1] == "1":
+                neighbors.append((row, col+1))
+            
             return neighbors
-            
-            
+                
+        
+        # BFS -> connect all islands
         def bfs(row, col):
             queue = deque()
             queue.append((row, col))
@@ -26,20 +29,15 @@ class Solution:
                 (curr_row, curr_col) = queue.popleft()
                 
                 for (nrow, ncol) in get_neighbors(curr_row, curr_col):
-                    if grid[nrow][ncol] == "1":
-                        grid[nrow][ncol] = "0"
-                        queue.append((nrow, ncol))
-            
-            return
+                    grid[nrow][ncol] = "0"
+                    queue.append((nrow, ncol))
         
-        
-        # Outer loop
-        islands = 0
-        for r in range(M):
-            for c in range(N):
-                # If not visited -> BFS
+        # Outer loop -> traverses all unvisited islands
+        num_islands = 0
+        for r in range(m):
+            for c in range(n):
                 if grid[r][c] == "1":
-                    islands += 1
+                    num_islands += 1
                     bfs(r, c)
         
-        return islands
+        return num_islands
